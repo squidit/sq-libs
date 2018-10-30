@@ -1,0 +1,36 @@
+{
+  "name": "squid-media-mapping",
+  "version": "1810.3.0",
+  "description": "Mapping functions from whatever to media",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "lint": "standard",
+    "lint:fix": "standard --fix"
+  },
+  "standard": {
+    "globals": [
+      "describe",
+      "it"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/squidit/squid-media-mapping.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/squidit/squid-media-mapping/issues"
+  },
+  "homepage": "https://gitlab.com/squidit/squid-media-mapping#README",
+  "devDependencies": {
+    "chai": "3.5.0",
+    "chai-datetime": "1.4.1",
+    "mocha": "2.5.3",
+    "standard": "^10.0.2"
+  },
+  "dependencies": {
+    "lodash": "^4.15.0"
+  }
+}

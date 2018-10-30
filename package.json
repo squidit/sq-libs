@@ -1,0 +1,38 @@
+{
+  "name": "sq-libs",
+  "version": "1810.3.0",
+  "description": "Projeto que agrupa libs privadas da organização Squid",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "lint": "standard",
+    "lint:fix": "standard --fix"
+  },
+  "keywords": [],
+  "standard": {
+    "globals": [
+      "describe",
+      "it"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/squidit/sq-libs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/squidit/sq-libs/issues"
+  },
+  "homepage": "https://gitlab.com/squidit/sq-libs#README",
+  "devDependencies": {
+    "chai": "3.5.0",
+    "chai-datetime": "1.4.1",
+    "mocha": "2.5.3",
+    "standard": "^10.0.2"
+  },
+  "dependencies": {
+    "got": "^9.2.2",
+    "lodash": "^4.15.0"
+  }
+}
