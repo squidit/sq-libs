@@ -1,5 +1,5 @@
 const got = require('got')
-const signatureRequest = require('sq-pinterest-v3/src/utils/signature-request')
+const signatureRequest = require('./signature-request')
 const baseUrl = 'https://api.pinterest.com/v3'
 
 async function sqGot (path, method, query, needSignature) {
