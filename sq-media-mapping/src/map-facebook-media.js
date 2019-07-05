@@ -23,6 +23,9 @@ function mapFacebookMediaToSquidMedia (fbMedia) {
       username: get(fbMedia, 'owner.username', ''),
       foto: get(fbMedia, 'owner.profile_picture_url', 'https://igcdn-photos-e-a.akamaihd.net/hphotos-ak-xtp1/t51.2885-19/11906329_960233084022564_1448528159_a.jpg'),
       nome: get(fbMedia, 'owner.name', '')
+    },
+    metadados: {
+      idFacebook: get(fbMedia, 'id')
     }
   }
 

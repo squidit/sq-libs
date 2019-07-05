@@ -53,6 +53,11 @@ describe('Facebook Media mapping to Squid medias', () => {
     expect(user).to.have.property('foto', 'https://scontent.xx.fbcdn.net/v/t51.2885-15/35480222_1566271556817364_3959603905792311296_n.jpg?_nc_cat=0&oh=945a7339c8fe9ad52eb6e925f57070d8&oe=5BD059D3')
     expect(user).to.have.property('nome', 'G A B R I E L A  M A R I N O')
 
+    /* metadata */
+    expect(media).to.have.property('metadados')
+    const metadata = media.metadados
+    expect(metadata).to.have.property('idFacebook', '17929566949146367')
+
     done()
   })
 })
