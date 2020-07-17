@@ -51,7 +51,8 @@ function mapInstagramMediaToSquidMedia (instagramMedia) {
     },
     metadados: {
       filter: get(instagramMedia, 'filter', ''),
-      users_in_photo: get(instagramMedia, 'users_in_photo', [])
+      users_in_photo: get(instagramMedia, 'users_in_photo', []),
+      productType: get(instagramMedia, 'product_type')
     }
   }
 
