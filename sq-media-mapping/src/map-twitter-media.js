@@ -1,18 +1,23 @@
 const isArray = require('lodash/isArray')
+const get = require('lodash/get')
 
 function getCenter (arr) {
   return arr.reduce((x, y) => ([x[0] + (y[0] / arr.length), (x[1] + (y[1] / arr.length))]), [0, 0])
 }
 
 function mapTwitterMediaToSquidMedia (data) {
-  const media = data.extended_entities.media[0]
+  const media = {
+    ...get(data, 'entities.medias[0]',{}),
+    url: get(data, 'entities.medias[0].expandaded_url', null),
+    type: media.mediaType
+  }
   const url = data.extended_entities.media[0].media_url_https
 
   const mappedMedia = {
     uid: data.id_str,
     tags: data.entities.hashtags.map(tag => (tag.text)),
     link: media.url,
-    tipo: (media.type === 'video' || media.type === 'animated_gif') ? 'video' : 'imagem',
+    tipo: media.type,
     upvotes: data.favorite_count,
     origem: 'twitter',
     comentarios: 0,
@@ -37,6 +42,8 @@ function mapTwitterMediaToSquidMedia (data) {
       }
     },
     metadados: {
+      ...data.metrics,
+      polls: data.polls,
       retweet_count: data.retweet_count,
       in_reply_to_status_id_str: data.in_reply_to_status_id_str,
       source: data.source,
@@ -73,7 +80,8 @@ function mapTwitterMediaToSquidMedia (data) {
   }
 
   if (mappedMedia.tipo === 'video') {
-    const sizesOrdered = media.video_info.variants.sort(v => v.bitrate).filter(v => (v.bitrate || v.bitrate === 0))
+    const video = get(media, 'extended_entities.media[0]')
+    const sizesOrdered = video.video_info.variants.sort(v => v.bitrate).filter(v => (v.bitrate || v.bitrate === 0))
 
     mappedMedia.videos = {
       resolucaoPadrao: {
