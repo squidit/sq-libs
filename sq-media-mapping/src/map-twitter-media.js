@@ -82,7 +82,6 @@ function mapTwitterMediaToSquidMedia (data) {
   if (mappedMedia.tipo === 'video') {
     const video = get(media, 'extended_entities.media[0]')
     const sizesOrdered = video.video_info.variants.sort(v => v.bitrate).filter(v => (v.bitrate || v.bitrate === 0))
-
     mappedMedia.videos = {
       resolucaoPadrao: {
         url: sizesOrdered[0].url,
