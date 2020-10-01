@@ -7,11 +7,11 @@ function getCenter (arr) {
 
 function mapTwitterMediaToSquidMedia (data) {
   const media = {
-    ...get(data, 'entities.medias[0]',{}),
-    url: get(data, 'entities.medias[0].expandaded_url', ''),
+    ...get(data, 'extended_entities.media[0]',{}),
+    url: get(data, 'extended_entities.media[0].expandaded_url', ''),
     type: data.mediaType
   }
-  const url = get(data, 'entities.medias[0]',{ media_url_https: '' }).media_url_https
+  const url = get(data, 'extended_entities.media[0]',{ media_url_https: '' }).media_url_https
 
   const mappedMedia = {
     uid: data.id_str,
@@ -82,7 +82,7 @@ function mapTwitterMediaToSquidMedia (data) {
   }
 
   if (mappedMedia.tipo === 'video') {
-    const video = get(media, 'extended_entities.media[0]')
+    const video = get(data, 'extended_entities.media[0]')
     const sizesOrdered = video.video_info.variants.sort(v => v.bitrate).filter(v => (v.bitrate || v.bitrate === 0))
     mappedMedia.videos = {
       resolucaoPadrao: {
