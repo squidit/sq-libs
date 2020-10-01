@@ -8,10 +8,10 @@ function getCenter (arr) {
 function mapTwitterMediaToSquidMedia (data) {
   const media = {
     ...get(data, 'entities.medias[0]',{}),
-    url: get(data, 'entities.medias[0].expandaded_url', null),
-    type: media.mediaType
+    url: get(data, 'entities.medias[0].expandaded_url', ''),
+    type: data.mediaType
   }
-  const url = data.extended_entities.media[0].media_url_https
+  const url = get(data, 'entities.medias[0]',{ media_url_https: '' }).media_url_https
 
   const mappedMedia = {
     uid: data.id_str,
@@ -20,27 +20,10 @@ function mapTwitterMediaToSquidMedia (data) {
     tipo: media.type,
     upvotes: data.favorite_count,
     origem: 'twitter',
-    comentarios: 0,
+    comentarios: data.metrics.reply_count,
     legenda: data.text,
     criadoEm: new Date(data.created_at),
     obtidoEm: new Date(),
-    imagens: {
-      resolucaoPadrao: {
-        url: `${url}:large`,
-        width: media.sizes.large.w,
-        height: media.sizes.large.h
-      },
-      resolucaoMedia: {
-        url: `${url}:small`,
-        width: media.sizes.small.w,
-        height: media.sizes.small.h
-      },
-      thumbnail: {
-        url: `${url}:thumb`,
-        width: media.sizes.thumb.w,
-        height: media.sizes.thumb.h
-      }
-    },
     metadados: {
       ...data.metrics,
       polls: data.polls,
@@ -59,6 +42,25 @@ function mapTwitterMediaToSquidMedia (data) {
       username: data.user.screen_name,
       foto: data.user.profile_image_url_https,
       nome: data.user.name
+    }
+  }
+  if (['imagem', 'video'].includes(mappedMedia.tipo)) {
+    mappedMedia.imagens = {
+      resolucaoPadrao: {
+        url: `${url}:large`,
+        width: media.sizes.large.w,
+        height: media.sizes.large.h
+      },
+      resolucaoMedia: {
+        url: `${url}:small`,
+        width: media.sizes.small.w,
+        height: media.sizes.small.h
+      },
+      thumbnail: {
+        url: `${url}:thumb`,
+        width: media.sizes.thumb.w,
+        height: media.sizes.thumb.h
+      }
     }
   }
 
