@@ -5,11 +5,31 @@ function getCenter (arr) {
   return arr.reduce((x, y) => ([x[0] + (y[0] / arr.length), (x[1] + (y[1] / arr.length))]), [0, 0])
 }
 
+function getMediaType (tweet) {
+  /**
+   * Quando faz um tweet com uma media anexada, ele possui essa prop,
+   * segundo o proprio twitter (https://developer.twitter.com/en/docs/twitter-api/v1/data-dictionary/overview/extended-entities-object)
+   * 
+   */
+  if (tweet.mediaType) return tweet.mediaType
+  if (tweet.extended_entities && tweet.extended_entities.media && tweet.extended_entities.media.length > 0) { 
+    const isAnyOfMediaIsVideo = tweet.extended_entities.media.filter(media => media.type.includes('video')).length > 0
+    if (isAnyOfMediaIsVideo) return 'video'
+
+    const firstMedia = tweet.extended_entities.media[0]
+    return firstMedia.type.includes('gif') || firstMedia.type.includes('photo') ? 'imagem' : firstMedia.type
+  } else if (tweet.polls && tweet.polls.length > 0) { //  Para tweet que possui url no link
+    return 'poll'
+  } else {
+    return 'text'
+  }
+}
+
 function mapTwitterMediaToSquidMedia (data) {
   const media = {
     ...get(data, 'extended_entities.media[0]',{}),
     url: get(data, 'extended_entities.media[0].expandaded_url', ''),
-    type: data.mediaType
+    type: getMediaType(data)
   }
   const url = get(data, 'extended_entities.media[0]',{ media_url_https: '' }).media_url_https
 
@@ -20,13 +40,13 @@ function mapTwitterMediaToSquidMedia (data) {
     tipo: media.type,
     upvotes: data.favorite_count,
     origem: 'twitter',
-    comentarios: data.metrics.reply_count,
+    comentarios: get(data, 'metrics.reply_count', null),
     legenda: data.text,
     criadoEm: new Date(data.created_at),
     obtidoEm: new Date(),
     metadados: {
-      ...data.metrics,
-      polls: data.polls,
+      ...get(data, 'metrics', {}),
+      polls: data.polls || [],
       retweet_count: data.retweet_count,
       in_reply_to_status_id_str: data.in_reply_to_status_id_str,
       source: data.source,
@@ -101,7 +121,7 @@ function mapTwitterMediaToSquidMedia (data) {
   return mappedMedia
 }
 
-module.exports = function mapYoutubeMedia (medias) {
+module.exports = function mapTweetMedia (medias) {
   return isArray(medias)
     ? medias.map(mapTwitterMediaToSquidMedia)
     : mapTwitterMediaToSquidMedia(medias)
