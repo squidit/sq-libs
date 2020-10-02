@@ -1,42 +1,52 @@
 const isArray = require('lodash/isArray')
+const get = require('lodash/get')
 
 function getCenter (arr) {
   return arr.reduce((x, y) => ([x[0] + (y[0] / arr.length), (x[1] + (y[1] / arr.length))]), [0, 0])
 }
 
+function getMediaType (tweet) {
+  /**
+   * Quando faz um tweet com uma media anexada, ele possui essa prop,
+   * segundo o proprio twitter (https://developer.twitter.com/en/docs/twitter-api/v1/data-dictionary/overview/extended-entities-object)
+   * 
+   */
+  if (tweet.mediaType) return tweet.mediaType
+  if (tweet.extended_entities && tweet.extended_entities.media && tweet.extended_entities.media.length > 0) { 
+    const isAnyOfMediaIsVideo = tweet.extended_entities.media.filter(media => media.type.includes('video')).length > 0
+    if (isAnyOfMediaIsVideo) return 'video'
+
+    const firstMedia = tweet.extended_entities.media[0]
+    return firstMedia.type.includes('gif') || firstMedia.type.includes('photo') ? 'imagem' : firstMedia.type
+  } else if (tweet.polls && tweet.polls.length > 0) { //  Para tweet que possui url no link
+    return 'poll'
+  } else {
+    return 'text'
+  }
+}
+
 function mapTwitterMediaToSquidMedia (data) {
-  const media = data.extended_entities.media[0]
-  const url = data.extended_entities.media[0].media_url_https
+  const media = {
+    ...get(data, 'extended_entities.media[0]',{}),
+    url: get(data, 'extended_entities.media[0].expandaded_url', ''),
+    type: getMediaType(data)
+  }
+  const url = get(data, 'extended_entities.media[0]',{ media_url_https: '' }).media_url_https
 
   const mappedMedia = {
     uid: data.id_str,
     tags: data.entities.hashtags.map(tag => (tag.text)),
     link: media.url,
-    tipo: (media.type === 'video' || media.type === 'animated_gif') ? 'video' : 'imagem',
+    tipo: media.type,
     upvotes: data.favorite_count,
     origem: 'twitter',
-    comentarios: 0,
+    comentarios: get(data, 'metrics.reply_count', null),
     legenda: data.text,
     criadoEm: new Date(data.created_at),
     obtidoEm: new Date(),
-    imagens: {
-      resolucaoPadrao: {
-        url: `${url}:large`,
-        width: media.sizes.large.w,
-        height: media.sizes.large.h
-      },
-      resolucaoMedia: {
-        url: `${url}:small`,
-        width: media.sizes.small.w,
-        height: media.sizes.small.h
-      },
-      thumbnail: {
-        url: `${url}:thumb`,
-        width: media.sizes.thumb.w,
-        height: media.sizes.thumb.h
-      }
-    },
     metadados: {
+      ...get(data, 'metrics', {}),
+      polls: data.polls || [],
       retweet_count: data.retweet_count,
       in_reply_to_status_id_str: data.in_reply_to_status_id_str,
       source: data.source,
@@ -52,6 +62,25 @@ function mapTwitterMediaToSquidMedia (data) {
       username: data.user.screen_name,
       foto: data.user.profile_image_url_https,
       nome: data.user.name
+    }
+  }
+  if (['imagem', 'video'].includes(mappedMedia.tipo)) {
+    mappedMedia.imagens = {
+      resolucaoPadrao: {
+        url: `${url}:large`,
+        width: media.sizes.large.w,
+        height: media.sizes.large.h
+      },
+      resolucaoMedia: {
+        url: `${url}:small`,
+        width: media.sizes.small.w,
+        height: media.sizes.small.h
+      },
+      thumbnail: {
+        url: `${url}:thumb`,
+        width: media.sizes.thumb.w,
+        height: media.sizes.thumb.h
+      }
     }
   }
 
@@ -73,8 +102,8 @@ function mapTwitterMediaToSquidMedia (data) {
   }
 
   if (mappedMedia.tipo === 'video') {
-    const sizesOrdered = media.video_info.variants.sort(v => v.bitrate).filter(v => (v.bitrate || v.bitrate === 0))
-
+    const video = get(data, 'extended_entities.media[0]')
+    const sizesOrdered = video.video_info.variants.sort(v => v.bitrate).filter(v => (v.bitrate || v.bitrate === 0))
     mappedMedia.videos = {
       resolucaoPadrao: {
         url: sizesOrdered[0].url,
@@ -92,7 +121,7 @@ function mapTwitterMediaToSquidMedia (data) {
   return mappedMedia
 }
 
-module.exports = function mapYoutubeMedia (medias) {
+module.exports = function mapTweetMedia (medias) {
   return isArray(medias)
     ? medias.map(mapTwitterMediaToSquidMedia)
     : mapTwitterMediaToSquidMedia(medias)
