@@ -19,9 +19,9 @@ function getMediaType (tweet) {
     const firstMedia = tweet.extended_entities.media[0]
     return firstMedia.type.includes('gif') || firstMedia.type.includes('photo') ? 'imagem' : firstMedia.type
   } else if (tweet.polls && tweet.polls.length > 0) { //  Para tweet que possui url no link
-    return 'poll'
+    return 'votacao'
   } else {
-    return 'text'
+    return 'texto'
   }
 }
 
