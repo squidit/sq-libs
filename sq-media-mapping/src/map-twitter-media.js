@@ -25,6 +25,12 @@ function getMediaType (tweet) {
   }
 }
 
+function getLink (data) {
+  const username = get(data, 'user.screen_name', '')
+  const idTweet  = get(data, 'id_str', '')
+  return `https://twitter.com/${username}/status/${idTweet}`
+}
+
 function mapTwitterMediaToSquidMedia (data) {
   const media = {
     ...get(data, 'extended_entities.media[0]',{}),
@@ -36,7 +42,7 @@ function mapTwitterMediaToSquidMedia (data) {
   const mappedMedia = {
     uid: data.id_str,
     tags: data.entities.hashtags.map(tag => (tag.text)),
-    link: media.url,
+    link: getLink(data),
     tipo: media.type,
     upvotes: data.favorite_count,
     origem: 'twitter',
