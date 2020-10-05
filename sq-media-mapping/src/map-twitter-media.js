@@ -52,8 +52,12 @@ function mapTwitterMediaToSquidMedia (data) {
     obtidoEm: new Date(),
     metadados: {
       ...get(data, 'metrics', {}),
+      impressions: get(data, 'metrics.impression_count', null),
+      likes: get(data, 'metrics.favorite_count', null),
+      replies: get(data, 'metrics.reply_count', null),
+      tax_engagement: get(data, 'metrics.engagement', null),
       polls: data.polls || [],
-      retweet_count: data.retweet_count,
+      retweets: data.retweet_count,
       in_reply_to_status_id_str: data.in_reply_to_status_id_str,
       source: data.source,
       user: {
