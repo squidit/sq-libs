@@ -25,6 +25,12 @@ function getMediaType (tweet) {
   }
 }
 
+function getLink (data) {
+  const username = get(data, 'user.screen_name', '')
+  const idTweet  = get(data, 'id_str', '')
+  return `https://twitter.com/${username}/status/${idTweet}`
+}
+
 function mapTwitterMediaToSquidMedia (data) {
   const media = {
     ...get(data, 'extended_entities.media[0]',{}),
@@ -36,7 +42,7 @@ function mapTwitterMediaToSquidMedia (data) {
   const mappedMedia = {
     uid: data.id_str,
     tags: data.entities.hashtags.map(tag => (tag.text)),
-    link: media.url,
+    link: getLink(data),
     tipo: media.type,
     upvotes: data.favorite_count,
     origem: 'twitter',
@@ -45,9 +51,14 @@ function mapTwitterMediaToSquidMedia (data) {
     criadoEm: new Date(data.created_at),
     obtidoEm: new Date(),
     metadados: {
-      ...get(data, 'metrics', {}),
+      in_reply_to_status_id_str: get(data, 'metrics.in_reply_to_status_id_str', null),
+      source: get(data, 'metrics.source', null), 
+      impressions: get(data, 'metrics.impression_count', 0),
+      likes: get(data, 'metrics.favorite_count', 0),
+      replies: get(data, 'metrics.reply_count', 0),
+      tax_engagement: get(data, 'metrics.engagement', 0),
       polls: data.polls || [],
-      retweet_count: data.retweet_count,
+      retweets: data.retweet_count,
       in_reply_to_status_id_str: data.in_reply_to_status_id_str,
       source: data.source,
       user: {
