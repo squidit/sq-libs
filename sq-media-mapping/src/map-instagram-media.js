@@ -1,5 +1,27 @@
 const get = require('lodash/get')
 
+
+function getTags (caption) {
+  if (!caption) return []
+  const rgx = /(#\w+)/
+  return caption.match(rgx).filter(v => typeof v === 'string')
+
+}
+
+function getMentions (caption) {
+  if (!caption) return []
+  const rgx = /(@\w+)/
+  return caption.match(rgx).filter(v => typeof v === 'string')
+}
+
+function isPub (caption) {
+  const tags = getTags(caption)
+  const isAnyAdPost = tags.filter(tag => {
+    return tag.indexOf('#ad') > -1 || tag.indexOf('#pub') > -1
+  }).length > 0
+  return isAnyAdPost
+}
+
 function mapInstagramMediaToSquidMedia (instagramMedia) {
   const mediaTypes = {
     image: 'imagem',
@@ -18,7 +40,9 @@ function mapInstagramMediaToSquidMedia (instagramMedia) {
     obtidoEm: new Date(),
     origem: 'instagram',
     uid: get(instagramMedia, 'id'),
-    tags: get(instagramMedia, 'tags', []),
+    tags: getTags(get(instagramMedia, 'caption.text', '')),
+    mentions: getMentions(get(instagramMedia, 'caption.text', '')),
+    pub: isPub(get(instagramMedia, 'caption.text', '')),
     link: get(instagramMedia, 'link'),
     tipo: mediaTypes[get(instagramMedia, 'type')] || 'video',
     upvotes: get(instagramMedia, 'likes.count', 0),

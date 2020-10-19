@@ -31,6 +31,14 @@ function getLink (data) {
   return `https://twitter.com/${username}/status/${idTweet}`
 }
 
+function isPub (tags) {
+  if (!tags || tags.legenth === 0) return false
+  const isAnyAdPost = tags.filter(tag => {
+    return tag.indexOf('ad') > -1 || tag.indexOf('pub') > -1
+  }).length > 0
+  return isAnyAdPost
+}
+
 function mapTwitterMediaToSquidMedia (data) {
   const media = {
     ...get(data, 'extended_entities.media[0]',{}),
@@ -42,7 +50,9 @@ function mapTwitterMediaToSquidMedia (data) {
   const mappedMedia = {
     uid: data.id_str,
     tags: data.entities.hashtags.map(tag => (tag.text)),
+    mentions: data.entities.user_mentions.map(user => user.screen_name),
     link: getLink(data),
+    pub: isPub(data.entities.hashtags.map(tag => (tag.text))),
     tipo: media.type,
     upvotes: data.favorite_count,
     origem: 'twitter',
