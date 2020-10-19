@@ -52,7 +52,7 @@ function mapTwitterMediaToSquidMedia (data) {
     tags: data.entities.hashtags.map(tag => (tag.text)),
     mentions: data.entities.user_mentions.map(user => user.screen_name),
     link: getLink(data),
-    pub: isPub(data.entities.hashtags.map(tag => (tag.text))),
+    ad: isPub(data.entities.hashtags.map(tag => (tag.text))),
     tipo: media.type,
     upvotes: data.favorite_count,
     origem: 'twitter',

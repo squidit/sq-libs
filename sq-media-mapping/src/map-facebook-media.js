@@ -3,15 +3,13 @@ const { get, isArray } = require('lodash')
 function getTags (caption) {
   if (!caption) return []
   const rgx = /(#\w+)/g
-  const results = caption.match(rgx) || []
-  return results.filter(v => typeof v === 'string').map(tag => tag.replace('#', '')) || []
+  return caption.match(rgx).filter(v => typeof v === 'string').map(tag => tag.replace('#', ''))
 }
 
 function getMentions (caption) {
   if (!caption) return []
   const rgx = /(@\w+)/g
-  const results = caption.match(rgx) || []
-  return results.filter(v => typeof v === 'string').map(tag => tag.replace('@', '')) || []
+  return caption.match(rgx).filter(v => typeof v === 'string').map(tag => tag.replace('@', ''))
 }
 
 function isPub (caption) {
@@ -41,7 +39,7 @@ function mapFacebookMediaToSquidMedia (fbMedia) {
     legenda: get(fbMedia, 'caption', ''),
     tags: getTags(get(fbMedia, 'caption', '')),
     mentions: getMentions(get(fbMedia, 'caption', '')),
-    pub: isPub(get(fbMedia, 'caption', '')),
+    ad: isPub(get(fbMedia, 'caption', '')),
     usuario: {
       id: `instagram|${get(fbMedia, 'owner.ig_id')}`,
       username: get(fbMedia, 'owner.username', ''),
