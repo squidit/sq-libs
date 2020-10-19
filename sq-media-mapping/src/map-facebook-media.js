@@ -3,13 +3,15 @@ const { get, isArray } = require('lodash')
 function getTags (caption) {
   if (!caption) return []
   const rgx = /(#\w+)/g
-  return caption.match(rgx).filter(v => typeof v === 'string').map(tag => tag.replace('#', ''))
+  const results = caption.match(rgx) || []
+  return results.filter(v => typeof v === 'string').map(tag => tag.replace('#', '')) || []
 }
 
 function getMentions (caption) {
   if (!caption) return []
   const rgx = /(@\w+)/g
-  return caption.match(rgx).filter(v => typeof v === 'string').map(tag => tag.replace('@', ''))
+  const results = caption.match(rgx) || []
+  return results.filter(v => typeof v === 'string').map(tag => tag.replace('@', '')) || []
 }
 
 function isPub (caption) {
