@@ -17,7 +17,7 @@ function getMentions (caption) {
 function isPub (caption) {
   const tags = getTags(caption)
   const isAnyAdPost = tags.filter(tag => {
-    return tag.indexOf('ad') > -1 || tag.indexOf('pub') > -1
+    return tag.indexOf('ad') > -1 || tag.indexOf('pub') > -1 || tag.indexOf('publi') > -1 || tag.indexOf('publicidade') > -1 || tag.indexOf('p u b l i') > -1
   }).length > 0
   return isAnyAdPost
 }
