@@ -17,6 +17,7 @@ function mapStoryMediaToSquidMedia (storyMedia) {
     comentarios: get(storyMedia, 'comments_count', 0),
     criadoEm: new Date(get(storyMedia, 'timestamp', new Date())),
     legenda: get(storyMedia, 'caption', ''),
+    detection: get(storyMedia, 'detection', null),
     usuario: {
       id: `instagram|${get(storyMedia, 'user.ig_id')}`,
       username: get(storyMedia, 'user.username', ''),
