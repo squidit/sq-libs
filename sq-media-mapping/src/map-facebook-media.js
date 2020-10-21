@@ -28,7 +28,7 @@ function mapFacebookMediaToSquidMedia (fbMedia) {
     VIDEO: 'video',
     CAROUSEL_ALBUM: 'carousel'
   }
-
+  const caption = get(fbMedia, 'caption.text', '') || get(fbMedia, 'caption', '')
   const media = {
     obtidoEm: new Date(),
     origem: 'instagram',
@@ -38,10 +38,10 @@ function mapFacebookMediaToSquidMedia (fbMedia) {
     upvotes: get(fbMedia, 'like_count', 0),
     comentarios: get(fbMedia, 'comments_count', 0),
     criadoEm: new Date(get(fbMedia, 'timestamp', new Date())),
-    legenda: get(fbMedia, 'caption', ''),
-    tags: getTags(get(fbMedia, 'caption', '')),
-    mentions: getMentions(get(fbMedia, 'caption', '')),
-    ad: isPub(get(fbMedia, 'caption', '')),
+    legenda: caption,
+    tags: getTags(caption),
+    mentions: getMentions(caption),
+    ad: isPub(caption),
     usuario: {
       id: `instagram|${get(fbMedia, 'owner.ig_id')}`,
       username: get(fbMedia, 'owner.username', ''),
