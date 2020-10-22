@@ -28,33 +28,56 @@ function getCaption(fbMedia) {
   return get(fbMedia, 'caption', '')
 }
 
-function mapFacebookMediaToSquidMedia (fbMedia) {
-  const mediaTypes = {
-    IMAGE: 'imagem',
-    VIDEO: 'video',
-    CAROUSEL_ALBUM: 'carousel'
+function getUID(fbMedia) {
+  if (get(fbMedia, 'ig_id') && get(fbMedia, 'owner.ig_id')) {
+    return `${get(fbMedia, 'ig_id')}_${get(fbMedia, 'owner.ig_id')}`
   }
+  return get(fbMedia, 'id')
+}
 
-  const caption = getCaption(fbMedia)
-  const media = {
-    obtidoEm: new Date(),
-    origem: 'instagram',
-    uid: `${get(fbMedia, 'ig_id')}_${get(fbMedia, 'owner.ig_id')}`,
-    link: get(fbMedia, 'permalink'),
-    tipo: (mediaTypes[get(fbMedia, 'media_type')] || 'imagem'),
-    upvotes: get(fbMedia, 'like_count', 0),
-    comentarios: get(fbMedia, 'comments_count', 0),
-    criadoEm: new Date(get(fbMedia, 'timestamp', new Date())),
-    legenda: caption,
-    tags: getTags(caption),
-    mentions: getMentions(caption),
-    ad: isPub(caption),
-    usuario: {
+function getUser(fbMedia) {
+  const {owner} = fbMedia
+  if (owner) {
+    return {
       id: `instagram|${get(fbMedia, 'owner.ig_id')}`,
       username: get(fbMedia, 'owner.username', ''),
       foto: get(fbMedia, 'owner.profile_picture_url', 'https://igcdn-photos-e-a.akamaihd.net/hphotos-ak-xtp1/t51.2885-19/11906329_960233084022564_1448528159_a.jpg'),
       nome: get(fbMedia, 'owner.name', '')
-    },
+    }
+  } else {
+    return {
+      id: `instagram|${get(fbMedia, 'user.id')}`,
+      username: get(fbMedia, 'user.username', ''),
+      foto: get(fbMedia, 'user.profile_picture_url', 'https://igcdn-photos-e-a.akamaihd.net/hphotos-ak-xtp1/t51.2885-19/11906329_960233084022564_1448528159_a.jpg'),
+      nome: get(fbMedia, 'user.full_name', '')
+    }
+  }
+}
+
+function mapFacebookMediaToSquidMedia (fbMedia) {
+  const mediaTypes = {
+    IMAGE: 'imagem',
+    VIDEO: 'video',
+    CAROUSEL_ALBUM: 'carousel',
+    CAROUSEL: 'carousel'
+  }
+
+  const caption = getCaption(fbMedia)
+  const mediaType = get(fbMedia, 'media_type') || get(fbMedia, 'type')
+  const media = {
+    obtidoEm: new Date(),
+    origem: 'instagram',
+    uid: getUID(fbMedia),
+    link: get(fbMedia, 'permalink') || get(fbMedia, 'link'),
+    tipo: (mediaTypes[mediaType.toUpperCase()] || 'imagem'),
+    upvotes: get(fbMedia, 'like_count', 0) || get(fbMedia, 'likes.count', 0),
+    comentarios: get(fbMedia, 'comments_count', 0) || get(fbMedia, 'comments.count', 0),
+    criadoEm: new Date(get(fbMedia, 'timestamp') || (get(fbMedia, 'created_time', 0) * 1000) || new Date()),
+    legenda: caption,
+    tags: getTags(caption),
+    mentions: getMentions(caption),
+    ad: isPub(caption),
+    usuario: getUser(fbMedia),
     metadados: {
       idFacebook: get(fbMedia, 'id')
     }
@@ -75,17 +98,17 @@ function mapFacebookMediaToSquidMedia (fbMedia) {
     }
     media.imagens = {
       resolucaoPadrao: {
-        url: get(fbMedia, 'thumbnail_url', ''),
+        url: get(fbMedia, 'thumbnail_url', '') || get(fbMedia, 'images.standard_resolution.url', ''),
         width: 640,
         height: 640
       },
       resolucaoMedia: {
-        url: get(fbMedia, 'thumbnail_url', ''),
+        url: get(fbMedia, 'thumbnail_url', '') || get(fbMedia, 'images.low_resolution.url', ''),
         width: 320,
         height: 320
       },
       thumbnail: {
-        url: get(fbMedia, 'thumbnail_url', ''),
+        url: get(fbMedia, 'thumbnail_url', '') || get(fbMedia, 'images.thumbail.url', ''),
         width: 150,
         height: 150
       }
@@ -93,17 +116,17 @@ function mapFacebookMediaToSquidMedia (fbMedia) {
   } else {
     media.imagens = {
       resolucaoPadrao: {
-        url: get(fbMedia, 'media_url', ''),
+        url: get(fbMedia, 'media_url', '') || get(fbMedia, 'images.standard_resolution.url', ''),
         width: 640,
         height: 640
       },
       resolucaoMedia: {
-        url: get(fbMedia, 'media_url', ''),
+        url: get(fbMedia, 'media_url', '') || get(fbMedia, 'images.low_resolution.url', ''),
         width: 320,
         height: 320
       },
       thumbnail: {
-        url: get(fbMedia, 'media_url', ''),
+        url: get(fbMedia, 'media_url', '') || get(fbMedia, 'images.thumbnail_resolution.url', ''),
         width: 150,
         height: 150
       }
