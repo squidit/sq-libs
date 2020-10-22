@@ -23,7 +23,7 @@ function isPub (caption) {
 }
 
 function getCaption(fbMedia) {
-  const captionText = get(fbMedia, 'caption.text', '')
+  const captionText = get(fbMedia, 'caption.text', null)
   if (captionText !== null && captionText !== undefined) return captionText
   return get(fbMedia, 'caption', '')
 }
