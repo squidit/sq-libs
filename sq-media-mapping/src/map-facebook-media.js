@@ -22,13 +22,20 @@ function isPub (caption) {
   return isAnyAdPost
 }
 
+function getCaption(fbMedia) {
+  const captionText = get(fbMedia, 'caption.text', '')
+  if (captionText !== null && captionText !== undefined) return captionText
+  return get(fbMedia, 'caption', '')
+}
+
 function mapFacebookMediaToSquidMedia (fbMedia) {
   const mediaTypes = {
     IMAGE: 'imagem',
     VIDEO: 'video',
     CAROUSEL_ALBUM: 'carousel'
   }
-  const caption = get(fbMedia, 'caption.text', '') || get(fbMedia, 'caption', '')
+
+  const caption = getCaption(fbMedia)
   const media = {
     obtidoEm: new Date(),
     origem: 'instagram',
