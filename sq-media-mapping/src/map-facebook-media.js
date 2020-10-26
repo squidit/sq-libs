@@ -2,7 +2,7 @@ const { get, isArray } = require('lodash')
 
 function getTags (caption) {
   if (!caption) return []
-  const rgx = /(#\w+)/g
+  const rgx = /(#\w+)/gim
   const results = caption.match(rgx) || []
   return results.filter(v => typeof v === 'string').map(tag => tag.replace('#', ''))
 }
@@ -15,11 +15,9 @@ function getMentions (caption) {
 }
 
 function isPub (caption) {
-  const tags = getTags(caption)
-  const isAnyAdPost = tags.filter(tag => {
-    return tag.indexOf('ad') > -1 || tag.indexOf('pub') > -1 || tag.indexOf('publi') > -1 || tag.indexOf('publicidade') > -1 || tag.indexOf('p u b l i') > -1
-  }).length > 0
-  return isAnyAdPost
+  const rgxPub = new RegExp(`(publi|p u b l i|ad|ads|publicidade)(\\s+|$|\\.)`, 'gi')
+  const isCaptionContainsAd = rgxPub.exec(caption)
+  return !!isCaptionContainsAd
 }
 
 function getCaption(fbMedia) {
