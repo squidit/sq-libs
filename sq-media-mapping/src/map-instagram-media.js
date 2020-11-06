@@ -2,16 +2,18 @@ const get = require('lodash/get')
 
 
 function getTags (caption) {
-  if (!caption) return []
-  const rgx = /(#\w+)/
-  return caption.match(rgx).filter(v => typeof v === 'string')
+  const rgx = /(#\w+)/g
+  const haveTags = caption ? caption.match(rgx) : ''
+  if (!haveTags) return []
+  return haveTags.filter(v => typeof v === 'string')
 
 }
 
 function getMentions (caption) {
-  if (!caption) return []
-  const rgx = /(@\w+)/
-  return caption.match(rgx).filter(v => typeof v === 'string')
+  const rgx = /(@\w+)/g
+  const haveMentions = caption ? caption.match(rgx) : ''
+  if (!haveMentions) return []
+  return haveMentions.filter(v => typeof v === 'string')
 }
 
 function isPub (caption) {
