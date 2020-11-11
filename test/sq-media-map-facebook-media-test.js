@@ -60,4 +60,13 @@ describe('Facebook Media mapping to Squid medias', () => {
 
     done()
   })
+
+  it('should return 2 mentions into list', () => {
+    mock.caption += ' @username @username2 '
+    const media = mapFacebookMedia(mock)
+    console.log(media.mentions)
+    expect(media.mentions).to.be.have.lengthOf(2)
+    expect(media.mentions[0]).to.be.equal('username')
+    expect(media.mentions[1]).to.be.equal('username2')
+  })
 })

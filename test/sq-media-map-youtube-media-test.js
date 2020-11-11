@@ -1,6 +1,7 @@
 /* eslint-disable */
 const chai = require('chai');
 const { expect } = require('chai');
+const {cloneDeep} = require('lodash')
 chai.use(require('chai-datetime'));
 const mapYoutubeMedia = require('../sq-media-mapping/src/map-youtube-media');
 const mock = require('./mock/youtube-media-mock');
@@ -93,4 +94,52 @@ describe('Youtube medias mapping to Squid medias', () => {
 
     done();
   });
+
+  it('should return links when description has links', () => {
+    const result = mapYoutubeMedia(mock[0])
+    expect(result.links).to.an('array')
+    expect(result.links).to.be.have.lengthOf(9)
+  })
+
+  it('should return pub true if title has #publi', () => {
+    mock[0].snippet.title += ' #publi'
+    const result = mapYoutubeMedia(mock[0])
+    expect(result.pub).to.be.equal(true)
+  })
+
+  it('should return pub true if title has #ad', () => {
+    const mockTest = cloneDeep(mock[0])
+    mockTest.snippet.title += ' #ad'
+    const result = mapYoutubeMedia(mockTest)
+    expect(result.pub).to.be.equal(true)
+  })
+
+  it('should return pub true if description has #publi', () => {
+    const mockTest = cloneDeep(mock[0])
+    mockTest.snippet.description += ' #publi'
+    const result = mapYoutubeMedia(mockTest)
+    expect(result.pub).to.be.equal(true)
+  })
+
+  it('should return pub true if description has #ad', () => {
+    const mockTest = cloneDeep(mock[0])
+    mockTest.snippet.description += ' #ad'
+    const result = mapYoutubeMedia(mockTest)
+    expect(result.pub).to.be.equal(true)
+  })
+
+  it('should return list of mentions when has a @username and @username2 into tilte', () => {
+    const mockTest = cloneDeep(mock[0])
+    mockTest.snippet.title += ' @username @username2'
+    const result = mapYoutubeMedia(mockTest)
+    expect(result.mentions).to.be.have.lengthOf(2)
+  })
+
+  it('should return list of mentions when has a @username and @username2 into description', () => {
+    const mockTest = cloneDeep(mock[0])
+    mockTest.snippet.description += ' @username @username2'
+    const result = mapYoutubeMedia(mockTest)
+  
+    expect(result.mentions).to.be.have.lengthOf(2)
+  })
 });

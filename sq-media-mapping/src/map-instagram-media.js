@@ -1,19 +1,17 @@
 const get = require('lodash/get')
 
-
 function getTags (caption) {
   const rgx = /(#\w+)/g
   const haveTags = caption ? caption.match(rgx) : ''
   if (!haveTags) return []
-  return haveTags.filter(v => typeof v === 'string')
-
+  return haveTags.filter(v => v && typeof v === 'string').map(tag => tag.trim().replace('#', ''))
 }
 
 function getMentions (caption) {
-  const rgx = /(@\w+)/g
+  const rgx = /(^|\s+@\w+)/g
   const haveMentions = caption ? caption.match(rgx) : ''
   if (!haveMentions) return []
-  return haveMentions.filter(v => typeof v === 'string')
+  return haveMentions.filter(v => typeof v === 'string').map(m => m.trim().replace('@', ''))
 }
 
 function isPub (caption) {

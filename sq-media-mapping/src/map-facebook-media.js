@@ -4,14 +4,14 @@ function getTags (caption) {
   if (!caption) return []
   const rgx = /(#\w+)/gim
   const results = caption.match(rgx) || []
-  return results.filter(v => typeof v === 'string').map(tag => tag.replace('#', ''))
+  return results.filter(v => typeof v === 'string').map(tag => tag.trim().replace('#', ''))
 }
 
 function getMentions (caption) {
   if (!caption) return []
-  const rgx = /(@\w+)/g
+  const rgx = /(^|\s+@\w+)/g
   const results = caption.match(rgx) || []
-  return results.filter(v => typeof v === 'string').map(tag => tag.replace('@', ''))
+  return results.filter(v => v && typeof v === 'string').map(mention => mention.trim().replace('@', ''))
 }
 
 function isPub (caption) {
@@ -20,7 +20,7 @@ function isPub (caption) {
   return !!isCaptionContainsAd
 }
 
-function getCaption(fbMedia) {
+function getCaption (fbMedia) {
   const captionText = get(fbMedia, 'caption.text', null)
   if (captionText !== null && captionText !== undefined) return captionText
   return get(fbMedia, 'caption', '')
@@ -33,7 +33,7 @@ function getUID(fbMedia) {
   return get(fbMedia, 'id')
 }
 
-function getUser(fbMedia) {
+function getUser (fbMedia) {
   const {owner} = fbMedia
   if (owner) {
     return {

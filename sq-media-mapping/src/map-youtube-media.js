@@ -1,8 +1,35 @@
 const isArray = require('lodash/isArray')
 const get = require('lodash/get')
 const map = require('lodash/map')
+function getLinks (description) {
+  if (!description) return description
+  const expression = '(https?://(?:www.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^\\s]{2,}|www.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9].[^\\s]{2,}|https?://(?:www.|(?!www))[a-zA-Z0-9]+.[^\\s]{2,}|www.[a-zA-Z0-9]+.[^\\s]{2,})'
+  const rgx = new RegExp(expression, 'gmi')
+  const links = []
+  let result
+  while ((result = rgx.exec(description)) !== null) {
+    links.push(result[0])
+  }
+
+  return links
+}
+
+function isPub (text) {
+  const rgxPub = new RegExp(`(publi|p u b l i|ad|ads|publicidade)(\\s+|$|\\.)`, 'gi')
+  const isCaptionContainsAd = rgxPub.exec(text)
+  return !!isCaptionContainsAd
+}
+
+function getMentions (text) {
+  if (!text) return []
+  const rgx = /(^|\s+@\w+)/g
+  const results = text.match(rgx) || []
+  return results.filter(v => v && typeof v === 'string').map(tag => tag.trim().replace('@', ''))
+}
 
 function mapYoutubeMediaToSquidMedia (youtubeMedia) {
+  const mentionsTitle = getMentions(get(youtubeMedia, 'snippet.title', ''))
+  const mentionsDescription = getMentions(get(youtubeMedia, 'snippet.description', ''))
   return {
     obtidoEm: new Date(),
     origem: 'youtube',
@@ -13,7 +40,10 @@ function mapYoutubeMediaToSquidMedia (youtubeMedia) {
     upvotes: parseInt(get(youtubeMedia, 'statistics.likeCount', 0), 10),
     comentarios: parseInt(get(youtubeMedia, 'statistics.commentCount', 0), 10),
     criadoEm: new Date(get(youtubeMedia, 'snippet.publishedAt')),
+    links: getLinks(get(youtubeMedia, 'snippet.description', '')),
     legenda: get(youtubeMedia, 'snippet.title', ''),
+    pub: isPub(get(youtubeMedia, 'snippet.title', '')) || isPub(get(youtubeMedia, 'snippet.description', '')),
+    mentions: mentionsTitle.concat(mentionsDescription),
     imagens: {
       resolucaoPadrao: {
         url: get(youtubeMedia, 'snippet.thumbnails.high.url'),
