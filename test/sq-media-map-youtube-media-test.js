@@ -104,28 +104,28 @@ describe('Youtube medias mapping to Squid medias', () => {
   it('should return pub true if title has #publi', () => {
     mock[0].snippet.title += ' #publi'
     const result = mapYoutubeMedia(mock[0])
-    expect(result.pub).to.be.equal(true)
+    expect(result.ad).to.be.equal(true)
   })
 
   it('should return pub true if title has #ad', () => {
     const mockTest = cloneDeep(mock[0])
     mockTest.snippet.title += ' #ad'
     const result = mapYoutubeMedia(mockTest)
-    expect(result.pub).to.be.equal(true)
+    expect(result.ad).to.be.equal(true)
   })
 
   it('should return pub true if description has #publi', () => {
     const mockTest = cloneDeep(mock[0])
     mockTest.snippet.description += ' #publi'
     const result = mapYoutubeMedia(mockTest)
-    expect(result.pub).to.be.equal(true)
+    expect(result.ad).to.be.equal(true)
   })
 
   it('should return pub true if description has #ad', () => {
     const mockTest = cloneDeep(mock[0])
     mockTest.snippet.description += ' #ad'
     const result = mapYoutubeMedia(mockTest)
-    expect(result.pub).to.be.equal(true)
+    expect(result.ad).to.be.equal(true)
   })
 
   it('should return list of mentions when has a @username and @username2 into tilte', () => {

@@ -42,7 +42,7 @@ function mapYoutubeMediaToSquidMedia (youtubeMedia) {
     criadoEm: new Date(get(youtubeMedia, 'snippet.publishedAt')),
     links: getLinks(get(youtubeMedia, 'snippet.description', '')),
     legenda: get(youtubeMedia, 'snippet.title', ''),
-    pub: isPub(get(youtubeMedia, 'snippet.title', '')) || isPub(get(youtubeMedia, 'snippet.description', '')),
+    ad: isPub(get(youtubeMedia, 'snippet.title', '')) || isPub(get(youtubeMedia, 'snippet.description', '')),
     mentions: mentionsTitle.concat(mentionsDescription),
     imagens: {
       resolucaoPadrao: {
