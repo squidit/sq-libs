@@ -27,6 +27,22 @@ function getMentions (text) {
   return results.filter(v => v && typeof v === 'string').map(tag => tag.trim().replace('@', ''))
 }
 
+function parseIso8601Duration(iso8601Duration) {
+  // tslint:disable-next-line
+  const iso8601DurationRegex = /(-)?P(?:([.,\d]+)Y)?(?:([.,\d]+)M)?(?:([.,\d]+)W)?(?:([.,\d]+)D)?T(?:([.,\d]+)H)?(?:([.,\d]+)M)?(?:([.,\d]+)S)?/
+  const matches = iso8601Duration.match(iso8601DurationRegex) || []
+  return {
+    sign: matches[1] === undefined ? '+' : '-',
+    years: parseInt(get(matches, '[2]', 0)),
+    months: parseInt(get(matches, '[3]', 0)),
+    weeks: parseInt(get(matches, '[4]', 0)),
+    days: parseInt(get(matches, '[5]', 0)),
+    hours: parseInt(get(matches, '[6]', 0)),
+    minutes: parseInt(get(matches, '[7]', 0)),
+    seconds: parseInt(get(matches, '[8]', 0))
+  }
+}
+
 function mapYoutubeMediaToSquidMedia (youtubeMedia) {
   const mentionsTitle = getMentions(get(youtubeMedia, 'snippet.title', ''))
   const mentionsDescription = getMentions(get(youtubeMedia, 'snippet.description', ''))
@@ -76,6 +92,7 @@ function mapYoutubeMediaToSquidMedia (youtubeMedia) {
       },
       description: get(youtubeMedia, 'snippet.description'),
       contentDetails: get(youtubeMedia, 'contentDetails'),
+      duration: parseIso8601Duration(get(youtubeMedia, 'contentDetails.duration', '')),
       player: get(youtubeMedia, 'player'),
       statusPrivacidade: get(youtubeMedia, 'status.privacyStatus'),
       idCategoria: parseInt(get(youtubeMedia, 'snippet.categoryId'))
