@@ -22,7 +22,7 @@ describe('Twitter medias mapping to Squid medias', () => {
     expect(media).to.have.property('tags');
     expect(media.tags).to.have.length(1);
     expect(media.tags[0]).to.be.eql('teamsquid');
-    expect(media).to.have.property('link', 'https://t.co/vZLHuFswbj');
+    expect(media).to.have.property('link', 'https://twitter.com/squiditapp/status/878686323984519168');
     expect(media).to.have.property('tipo', 'imagem');
     expect(media).to.have.property('upvotes', 10);
     expect(media).to.have.property('origem', 'twitter');
@@ -69,7 +69,7 @@ describe('Twitter medias mapping to Squid medias', () => {
     /* metadata */
     expect(media).to.have.property('metadados');
     const metadata = media.metadados;
-    expect(metadata).to.have.property('retweet_count', 0);
+    expect(metadata).to.have.property('retweets', 0);
     expect(metadata).to.have.property('in_reply_to_status_id_str', null);
     expect(metadata).to.have.property('source', '<a href="http://twitter.com/download/android" rel="nofollow">Twitter for Android</a>');
     expect(metadata.user).to.have.property('followers_count', 28);
@@ -96,7 +96,7 @@ describe('Twitter medias mapping to Squid medias', () => {
     expect(media).to.have.property('uid', '879349821232095233');
     expect(media).to.have.property('tags');
     expect(media.tags).to.have.length(1);
-    expect(media).to.have.property('link', 'https://t.co/MhI4wvDwCH');
+    expect(media).to.have.property('link', 'https://twitter.com/squiditapp/status/879349821232095233');
     expect(media).to.have.property('tipo', 'video');
     expect(media).to.have.property('upvotes', 0);
     expect(media).to.have.property('origem', 'twitter');
@@ -124,7 +124,7 @@ describe('Twitter medias mapping to Squid medias', () => {
     expect(media).to.have.property('videos');
     const videos = media.videos;
     expect(videos).to.have.property('resolucaoPadrao');
-    expect(videos.resolucaoPadrao).to.have.property('url', 'https://video.twimg.com/ext_tw_video/879349688134234114/pu/vid/480x480/pABZNEtI2YST_W0j.mp4');
+    expect(videos.resolucaoPadrao).to.have.property('url', 'https://video.twimg.com/ext_tw_video/879349688134234114/pu/vid/720x720/C0lXzF5AgDoBXRkZ.mp4');
     expect(videos.resolucaoPadrao).to.have.property('width', 640);
     expect(videos.resolucaoPadrao).to.have.property('height', 640);
     expect(videos.resolucaoMedia).to.have.property('url', 'https://video.twimg.com/ext_tw_video/879349688134234114/pu/vid/240x240/O50iw30vB5H4q4kv.mp4');
@@ -151,7 +151,7 @@ describe('Twitter medias mapping to Squid medias', () => {
     /* metadata */
     expect(media).to.have.property('metadados');
     const metadata = media.metadados;
-    expect(metadata).to.have.property('retweet_count', 0);
+    expect(metadata).to.have.property('retweets', 0);
     expect(metadata).to.have.property('in_reply_to_status_id_str', null);
     expect(metadata).to.have.property('source', '<a href="http://twitter.com/download/android" rel="nofollow">Twitter for Android</a>');
     expect(metadata.user).to.have.property('followers_count', 28);
@@ -178,8 +178,8 @@ describe('Twitter medias mapping to Squid medias', () => {
     expect(media).to.have.property('uid', '879364966519910400');
     expect(media).to.have.property('tags');
     expect(media.tags).to.have.length(1);
-    expect(media).to.have.property('link', 'https://t.co/AXgVsIMui0');
-    expect(media).to.have.property('tipo', 'video');
+    expect(media).to.have.property('link', 'https://twitter.com/squiditapp/status/879364966519910400');
+    expect(media).to.have.property('tipo', 'imagem');
     expect(media).to.have.property('upvotes', 0);
     expect(media).to.have.property('origem', 'twitter');
     expect(media).to.have.property('comentarios', 0);
@@ -202,17 +202,6 @@ describe('Twitter medias mapping to Squid medias', () => {
     expect(images.thumbnail).to.have.property('width', 150);
     expect(images.thumbnail).to.have.property('height', 150);
 
-    /* videos */
-    expect(media).to.have.property('videos');
-    const videos = media.videos;
-    expect(videos).to.have.property('resolucaoPadrao');
-    expect(videos.resolucaoPadrao).to.have.property('url', 'https://video.twimg.com/tweet_video/DDQhw-wXsAAH1TD.mp4');
-    expect(videos.resolucaoPadrao).to.have.property('width', 640);
-    expect(videos.resolucaoPadrao).to.have.property('height', 640);
-    expect(videos.resolucaoMedia).to.have.property('url', 'https://video.twimg.com/tweet_video/DDQhw-wXsAAH1TD.mp4');
-    expect(videos.resolucaoMedia).to.have.property('width', 480);
-    expect(videos.resolucaoMedia).to.have.property('height', 480);
-
     /* location */
     expect(media).to.have.property('localizacao');
     const location = media.localizacao;
@@ -233,7 +222,7 @@ describe('Twitter medias mapping to Squid medias', () => {
     /* metadata */
     expect(media).to.have.property('metadados');
     const metadata = media.metadados;
-    expect(metadata).to.have.property('retweet_count', 0);
+    expect(metadata).to.have.property('retweets', 0);
     expect(metadata).to.have.property('in_reply_to_status_id_str', null);
     expect(metadata).to.have.property('source', '<a href="http://twitter.com/download/android" rel="nofollow">Twitter for Android</a>');
     expect(metadata.user).to.have.property('followers_count', 28);

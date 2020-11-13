@@ -80,7 +80,7 @@ describe('Instagram medias mapping to Squid medias', () => {
     const media = resultado.filter(r => r.uid === '1255673147483789726_2002244389')[0];
     expect(media).to.have.property('uid', '1255673147483789726_2002244389');
     expect(media).to.have.property('tags');
-    expect(media.tags).to.have.length(3);
+    expect(media.tags).to.have.length(5);
     expect(media).to.have.property('link', 'https://www.instagram.com/p/BFtDBMlxJme/');
     expect(media).to.have.property('tipo', 'video');
     expect(media).to.have.property('upvotes', 15);
