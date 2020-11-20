@@ -75,7 +75,7 @@ function mapTwitterMediaToSquidMedia (data) {
       replies: get(data, 'metrics.reply_count', 0),
       video_views: get(data, 'metrics.video_views', 0) || get(data, 'mediaMetrics[0].organic_metrics.view_count', 0) || get(data, 'mediaMetrics[0].public_metrics.view_count', 0) ,
       user_profile_clicks: get(data, 'metrics.url_profile_clicks', 0) || get(data, 'url_profile_clicks', 0),
-      url_clicks: get(data, 'metrics.url_clicks', 0),
+      url_clicks: get(data, 'metrics.url_clicks', 0) || get(data, 'metrics.url_link_clicks', 0),
       tax_engagement: get(data, 'metrics.engagement', 0),
       polls: data.polls || [],
       retweets: get(data, 'retweet_count', 0),
