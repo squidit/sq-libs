@@ -240,4 +240,46 @@ describe('Twitter medias mapping to Squid medias', () => {
 
     done();
   });
+
+  it('should map media twitter as Retweet', (done) => {
+    const tweet = mock[0]
+    tweet.retweeted = true
+    const resultado = mapTwitterMedia(tweet);
+    expect(resultado.metadados.type_tweet).to.be.eq('retweet')
+    done()
+  })
+
+  it('should map media twitter as Quoted retweet ', (done) => {
+    const tweet = mock[0]
+    tweet.retweeted = true
+    tweet.is_quote_status = true
+    const resultado = mapTwitterMedia(tweet);
+    expect(resultado.metadados.type_tweet).to.be.eq('quoted_retweet')
+    done()
+  })
+
+  it('should map media twitter as Tweet ', (done) => {
+    const tweet = mock[0]
+    tweet.retweeted = false
+    tweet.is_quote_status = false
+    const resultado = mapTwitterMedia(tweet);
+    expect(resultado.metadados.type_tweet).to.be.eq('tweet')
+    done()
+  })
+
+  it('should map media twitter as Quoted Tweet ', (done) => {
+    const tweet = mock[0]
+    tweet.retweeted = false
+    tweet.is_quote_status = true
+    const resultado = mapTwitterMedia(tweet);
+    expect(resultado.metadados.type_tweet).to.be.eq('quoted_tweet')
+    done()
+  })
+
+  it.only('should have conversation_id into metadados ', (done) => {
+    const tweet = mock[0]
+    const resultado = mapTwitterMedia(tweet);
+    expect(resultado.metadados.conversation_id).to.exist
+    done()
+  })
 });

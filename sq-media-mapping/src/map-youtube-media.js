@@ -27,7 +27,7 @@ function getMentions (text) {
   return results.filter(v => v && typeof v === 'string').map(tag => tag.trim().replace('@', ''))
 }
 
-function parseIso8601Duration(iso8601Duration) {
+function parseIso8601Duration (iso8601Duration) {
   // tslint:disable-next-line
   const iso8601DurationRegex = /(-)?P(?:([.,\d]+)Y)?(?:([.,\d]+)M)?(?:([.,\d]+)W)?(?:([.,\d]+)D)?T(?:([.,\d]+)H)?(?:([.,\d]+)M)?(?:([.,\d]+)S)?/
   const matches = iso8601Duration.match(iso8601DurationRegex) || []
