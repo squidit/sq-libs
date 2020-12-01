@@ -276,7 +276,7 @@ describe('Twitter medias mapping to Squid medias', () => {
     done()
   })
 
-  it.only('should have conversation_id into metadados ', (done) => {
+  it('should have conversation_id into metadados ', (done) => {
     const tweet = mock[0]
     const resultado = mapTwitterMedia(tweet);
     expect(resultado.metadados.conversation_id).to.exist
