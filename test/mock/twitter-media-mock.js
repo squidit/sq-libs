@@ -2,6 +2,7 @@ module.exports = [{
   created_at: 'Sat Jun 24 18:48:39 +0000 2017',
   id: 878686323984519200,
   id_str: '878686323984519168',
+  conversation_id: '123123123',
   text: '#teamsquid tá lindo https://t.co/vZLHuFswbj',
   truncated: false,
   entities: {
