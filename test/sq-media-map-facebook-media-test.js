@@ -62,11 +62,34 @@ describe('Facebook Media mapping to Squid medias', () => {
   })
 
   it('should return 2 mentions into list', () => {
-    mock.caption += ' @username @username2 '
+    mock.caption = ' @username @username2 '
     const media = mapFacebookMedia(mock)
     console.log(media.mentions)
     expect(media.mentions).to.be.have.lengthOf(2)
     expect(media.mentions[0]).to.be.equal('username')
     expect(media.mentions[1]).to.be.equal('username2')
+  })
+
+  it('should return @ala.limpeza in mentions', () => {
+    mock.caption = ' @ala.limpeza'
+    const media = mapFacebookMedia(mock)
+    console.log(media)
+    expect(media.mentions[0]).to.be.equal('ala.limpeza')
+  })
+
+  it('if have 2 mentions using the username @ala.limpeza,should return only one', () => {
+    mock.caption = ' @ala.limpeza @ala.limpeza'
+    const media = mapFacebookMedia(mock)
+    console.log(media)
+    expect(media.mentions[0]).to.be.equal('ala.limpeza')
+    expect(media.mentions.length).to.be.equal(1)
+  })
+
+  it('should return @username_123 in mentions', () => {
+    mock.caption = '@username_123'
+    const media = mapFacebookMedia(mock)
+    console.log(media.mentions)
+    expect(media.mentions).to.be.have.lengthOf(1)
+    expect(media.mentions[0]).to.be.equal('username_123')
   })
 })

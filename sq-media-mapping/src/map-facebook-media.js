@@ -1,4 +1,4 @@
-const { get, isArray } = require('lodash')
+const { get, isArray, uniq } = require('lodash')
 
 function getTags (caption) {
   if (!caption) return []
@@ -9,9 +9,10 @@ function getTags (caption) {
 
 function getMentions (caption) {
   if (!caption) return []
-  const rgx = /(^|\s+@\w+)/g
+  const rgx = new RegExp('@[A-z|.|\\w+]+', 'g')
   const results = caption.match(rgx) || []
-  return results.filter(v => v && typeof v === 'string').map(mention => mention.trim().replace('@', ''))
+  const mentions = results.filter(v => v && typeof v === 'string').map(mention => mention.trim().replace('@', ''))
+  return uniq(mentions)
 }
 
 function isPub (caption) {
@@ -26,7 +27,7 @@ function getCaption (fbMedia) {
   return get(fbMedia, 'caption', '')
 }
 
-function getUID(fbMedia) {
+function getUID (fbMedia) {
   if (get(fbMedia, 'ig_id') && get(fbMedia, 'owner.ig_id')) {
     return `${get(fbMedia, 'ig_id')}_${get(fbMedia, 'owner.ig_id')}`
   }
