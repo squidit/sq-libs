@@ -141,12 +141,6 @@ function mapFacebookMediaToSquidMedia (fbMedia) {
   return media
 }
 
-const getTagsInPhoto = (caption) => {
-  return caption.split(' ')
-    .filter(v => v.startsWith('#'))
-    .map(v => v.slice(1).toLowerCase())
-}
-
 module.exports = function mapFacebookMedia (fbMedia) {
   return isArray(fbMedia)
     ? fbMedia.map(mapFacebookMediaToSquidMedia)
