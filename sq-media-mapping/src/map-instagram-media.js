@@ -1,4 +1,5 @@
 const get = require('lodash/get')
+const uniq = require('lodash/uniq')
 
 function getTags (caption) {
   const rgx = /(#\w+)/g
@@ -8,10 +9,11 @@ function getTags (caption) {
 }
 
 function getMentions (caption) {
-  const rgx = /(^|\s+@\w+)/g
+  const rgx = new RegExp('@[A-z|.|\\w+]+', 'g')
   const haveMentions = caption ? caption.match(rgx) : ''
   if (!haveMentions) return []
-  return haveMentions.filter(v => typeof v === 'string').map(m => m.trim().replace('@', ''))
+  const mentions = haveMentions.filter(v => typeof v === 'string').map(m => m.trim().replace('@', ''))
+  return uniq(mentions)
 }
 
 function isPub (caption) {

@@ -11,7 +11,7 @@ function getMediaType (tweet) {
    * segundo o proprio twitter (https://developer.twitter.com/en/docs/twitter-api/v1/data-dictionary/overview/extended-entities-object)
    */
   if (tweet.mediaType) return tweet.mediaType
-  if (tweet.extended_entities && tweet.extended_entities.media && tweet.extended_entities.media.length > 0) { 
+  if (tweet.extended_entities && tweet.extended_entities.media && tweet.extended_entities.media.length > 0) {
     const isAnyOfMediaIsVideo = tweet.extended_entities.media.filter(media => media.type.includes('video')).length > 0
     if (isAnyOfMediaIsVideo) return 'video'
 
@@ -26,7 +26,7 @@ function getMediaType (tweet) {
 
 function getLink (data) {
   const username = get(data, 'user.screen_name', '')
-  const idTweet  = get(data, 'id_str', '')
+  const idTweet = get(data, 'id_str', '')
   return `https://twitter.com/${username}/status/${idTweet}`
 }
 
@@ -40,12 +40,12 @@ function isPub (tags) {
 
 function mapTwitterMediaToSquidMedia (data) {
   const media = {
-    ...get(data, 'extended_entities.media[0]',{}),
+    ...get(data, 'extended_entities.media[0]', {}),
     url: get(data, 'extended_entities.media[0].expandaded_url', ''),
     type: getMediaType(data)
   }
-  const url = get(data, 'extended_entities.media[0]',{ media_url_https: '' }).media_url_https
-  let typeTweet = data.retweeted ? 'retweet': 'tweet'
+  const url = get(data, 'extended_entities.media[0]', { media_url_https: '' }).media_url_https
+  let typeTweet = data.retweeted ? 'retweet' : 'tweet'
   if (data.retweeted) {
     if (data.is_quote_status) typeTweet = 'quoted_retweet'
     else typeTweet = 'retweet'
@@ -67,21 +67,19 @@ function mapTwitterMediaToSquidMedia (data) {
     criadoEm: new Date(data.created_at),
     obtidoEm: new Date(),
     metadados: {
-      in_reply_to_status_id_str: get(data, 'metrics.in_reply_to_status_id_str', null),
-      source: get(data, 'metrics.source', null),
+      in_reply_to_status_id_str: get(data, 'metrics.in_reply_to_status_id_str', null) || data.in_reply_to_status_id_str,
+      source: get(data, 'metrics.source', null) || data.source,
       type_tweet: typeTweet,
       impressions: get(data, 'metrics.impression_count', 0),
       likes: get(data, 'metrics.favorite_count', 0) || get(data, 'favorite_count', 0),
       replies: get(data, 'metrics.reply_count', 0),
-      video_views: get(data, 'metrics.video_views', 0) || get(data, 'metrics.mediaMetrics[0].organic_metrics.view_count', 0) || get(data, 'metrics.mediaMetrics[0].public_metrics.view_count', 0) ,
+      video_views: get(data, 'metrics.video_views', 0) || get(data, 'metrics.mediaMetrics[0].organic_metrics.view_count', 0) || get(data, 'metrics.mediaMetrics[0].public_metrics.view_count', 0),
       user_profile_clicks: get(data, 'metrics.user_profile_clicks', 0) || get(data, 'user_profile_clicks', 0),
       url_clicks: get(data, 'metrics.url_clicks', 0) || get(data, 'metrics.url_link_clicks', 0),
       tax_engagement: get(data, 'metrics.engagement', 0),
       polls: data.polls || [],
       retweets: get(data, 'retweet_count', 0),
       conversation_id: get(data, 'conversation_id', null),
-      in_reply_to_status_id_str: data.in_reply_to_status_id_str,
-      source: data.source,
       user: {
         followers_count: data.user.followers_count,
         friends_count: data.user.friends_count,
