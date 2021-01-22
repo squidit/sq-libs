@@ -95,6 +95,7 @@ function mapInstagramMediaToSquidMedia (instagramMedia) {
         height: get(instagramMedia, 'videos.low_bandwidth.height', 480)
       }
     }
+    media.metadados.video_views.video_views = get(instagramMedia, 'views.count')
   } else if (instagramMedia.type === 'carousel' && instagramMedia.hasOwnProperty('carousel_media')) {
     media.carousel = instagramMedia.carousel_media.map((c) => {
       const carouselType = mediaTypes[c.type]
