@@ -5,6 +5,7 @@ const mapFeatureMedia = require('./src/map-squid-media')
 const mapTwitterMedia = require('./src/map-twitter-media')
 const mapStoryMedia = require('./src/map-story-media')
 const mapFacebookMedia = require('./src/map-facebook-media')
+const mapTiktokMedia = require('./src/map-tiktok-media')
 
 module.exports = {
   mapInstagramMedia,
@@ -13,5 +14,6 @@ module.exports = {
   mapFeatureMedia,
   mapTwitterMedia,
   mapStoryMedia,
-  mapFacebookMedia
+  mapFacebookMedia,
+  mapTiktokMedia
 }
