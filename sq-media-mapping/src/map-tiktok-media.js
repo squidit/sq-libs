@@ -61,7 +61,8 @@ function mapTiktokMediaToSquidMedia (tiktokMedia) {
       duration: (get(tiktokMedia, 'duration', 0), 10),
       width: parseInt(get(tiktokMedia, 'width', 0), 10),
       height: parseInt(get(tiktokMedia, 'height', 0), 10),
-      player: get(tiktokMedia, 'embed_html')
+      player: get(tiktokMedia, 'embed_html'),
+      shares: parseInt(get(tiktokMedia, 'share_count', 0), 10),
     },
     usuario: get(tiktokMedia, 'usuario')
   }
