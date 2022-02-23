@@ -55,14 +55,14 @@ function mapTiktokMediaToSquidMedia (tiktokMedia) {
       statistics: {
         viewCount: parseInt(get(tiktokMedia, 'view_count', 0), 10),
         likeCount: parseInt(get(tiktokMedia, 'like_count', 0), 10),
-        commentCount: parseInt(get(tiktokMedia, 'comment_count', 0), 10)
+        commentCount: parseInt(get(tiktokMedia, 'comment_count', 0), 10),
+        shares: parseInt(get(tiktokMedia, 'share_count', 0), 10),
       },
       description: get(tiktokMedia, 'video_description'),
       duration: (get(tiktokMedia, 'duration', 0), 10),
       width: parseInt(get(tiktokMedia, 'width', 0), 10),
       height: parseInt(get(tiktokMedia, 'height', 0), 10),
       player: get(tiktokMedia, 'embed_html'),
-      shares: parseInt(get(tiktokMedia, 'share_count', 0), 10),
     },
     usuario: get(tiktokMedia, 'usuario')
   }
