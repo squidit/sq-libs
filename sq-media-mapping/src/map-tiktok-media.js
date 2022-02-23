@@ -29,7 +29,6 @@ function getMentions (text) {
 }
 
 function mapTiktokMediaToSquidMedia (tiktokMedia) {
-  console.log(tiktokMedia)
   const mentionsTitle = getMentions(get(tiktokMedia, 'title', ''))
   const mentionsDescription = getMentions(get(tiktokMedia, 'video_description', ''))
   return {
@@ -63,7 +62,8 @@ function mapTiktokMediaToSquidMedia (tiktokMedia) {
       width: parseInt(get(tiktokMedia, 'width', 0), 10),
       height: parseInt(get(tiktokMedia, 'height', 0), 10),
       player: get(tiktokMedia, 'embed_html')
-    }
+    },
+    usuario: get(tiktokMedia, 'usuario')
   }
 }
 
