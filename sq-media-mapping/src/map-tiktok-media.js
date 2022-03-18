@@ -1,7 +1,7 @@
 const isArray = require('lodash/isArray')
 const get = require('lodash/get')
 const map = require('lodash/map')
-const tiktokScraper = require('tiktok-scraper')
+const { getVideoMeta } = require('tiktok-scraper')
 
 function getLinks (description) {
   if (!description) return description
@@ -33,7 +33,8 @@ async function mapTiktokMediaToSquidMedia (tiktokMedia) {
   const mentionsTitle = getMentions(get(tiktokMedia, 'title', ''))
   const mentionsDescription = getMentions(get(tiktokMedia, 'video_description', ''))
 
-  const tiktokScraperVideo = await tiktokScraper.getVideoMeta(get(tiktokMedia, 'media.share_url', ''))
+  const url = get(tiktokMedia, 'share_url', '')
+  const tiktokScraperVideo = await getVideoMeta(url)
 
   return {
     obtidoEm: new Date(),
