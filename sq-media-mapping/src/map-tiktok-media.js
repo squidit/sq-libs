@@ -1,6 +1,7 @@
 const isArray = require('lodash/isArray')
 const get = require('lodash/get')
 const map = require('lodash/map')
+const tiktokScraper = require('tiktok-scraper')
 
 function getLinks (description) {
   if (!description) return description
@@ -28,9 +29,12 @@ function getMentions (text) {
   return results.filter(v => v && typeof v === 'string').map(tag => tag.trim().replace('@', ''))
 }
 
-function mapTiktokMediaToSquidMedia (tiktokMedia) {
+async function mapTiktokMediaToSquidMedia (tiktokMedia) {
   const mentionsTitle = getMentions(get(tiktokMedia, 'title', ''))
   const mentionsDescription = getMentions(get(tiktokMedia, 'video_description', ''))
+
+  const tiktokScraperVideo = await tiktokScraper.getVideoMeta(get(tiktokMedia, 'media.share_url', ''))
+
   return {
     obtidoEm: new Date(),
     origem: 'tiktok',
@@ -46,16 +50,16 @@ function mapTiktokMediaToSquidMedia (tiktokMedia) {
     mentions: mentionsTitle.concat(mentionsDescription),
     imagens: {
       resolucaoPadrao: {
-        url: get(tiktokMedia, 'cover_image_url', ''),
+        url: get(tiktokScraperVideo.collector[0], 'imageUrl', ''),
         width: get(tiktokMedia, 'width', 540),
         height: get(tiktokMedia, 'height', 480)
       }
     },
     videos: {
       resolucaoPadrao: {
-        url: get(tiktokMedia, 'embed_link', ''),
-        width: get(tiktokMedia, 'width', 540),
-        height: get(tiktokMedia, 'height', 480)
+        url: get(tiktokScraperVideo.collector[0], 'videoUrl', ''),
+        width: get(tiktokScraperVideo.collector[0], 'videoMeta.width', 540),
+        height: get(tiktokScraperVideo.collector[0], 'videoMeta.height', 480)
       }
     },
     metadados: {
@@ -63,13 +67,13 @@ function mapTiktokMediaToSquidMedia (tiktokMedia) {
         viewCount: parseInt(get(tiktokMedia, 'view_count', 0), 10),
         likeCount: parseInt(get(tiktokMedia, 'like_count', 0), 10),
         commentCount: parseInt(get(tiktokMedia, 'comment_count', 0), 10),
-        shares: parseInt(get(tiktokMedia, 'share_count', 0), 10),
+        shares: parseInt(get(tiktokMedia, 'share_count', 0), 10)
       },
       description: get(tiktokMedia, 'video_description'),
       duration: (get(tiktokMedia, 'duration', 0), 10),
       width: parseInt(get(tiktokMedia, 'width', 0), 10),
       height: parseInt(get(tiktokMedia, 'height', 0), 10),
-      player: get(tiktokMedia, 'embed_html'),
+      player: get(tiktokMedia, 'embed_html')
     },
     usuario: get(tiktokMedia, 'usuario')
   }
