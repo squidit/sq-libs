@@ -1,6 +1,6 @@
 {
   "name": "squid-media-mapping",
-  "version": "1810.3.0",
+  "version": "1810.3.1",
   "description": "Mapping functions from whatever to media",
   "main": "index.js",
   "scripts": {
@@ -31,6 +31,7 @@
     "standard": "^10.0.2"
   },
   "dependencies": {
-    "lodash": "^4.15.0"
+    "lodash": "^4.15.0",
+    "moment": "^2.29.1"
   }
 }

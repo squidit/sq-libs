@@ -1,6 +1,7 @@
 const isArray = require('lodash/isArray')
 const get = require('lodash/get')
 const map = require('lodash/map')
+const moment = require('moment')
 const { getVideoMeta } = require('tiktok-scraper')
 
 function getLinks (description) {
@@ -44,7 +45,7 @@ async function mapTiktokMediaToSquidMedia (tiktokMedia) {
     tipo: 'video',
     upvotes: parseInt(get(tiktokMedia, 'like_count', 0), 10),
     comentarios: parseInt(get(tiktokMedia, 'comment_count', 0), 10),
-    criadoEm: new Date(get(tiktokMedia, 'create_time')),
+    criadoEm: moment.unix(get(tiktokMedia, 'create_time')).toISOString(),
     links: getLinks(get(tiktokMedia, 'video_description', '')),
     legenda: get(tiktokMedia, 'title', ''),
     ad: isPub(get(tiktokMedia, 'title', '')) || isPub(get(tiktokMedia, 'video_description', '')),
