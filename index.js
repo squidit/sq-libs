@@ -6,6 +6,7 @@ const mapTwitterMedia = require('./sq-media-mapping/src/map-twitter-media')
 const mapStoryMedia = require('./sq-media-mapping/src/map-story-media')
 const mapFacebookMedia = require('./sq-media-mapping/src/map-facebook-media')
 const mapTiktokMedia = require('./sq-media-mapping/src/map-tiktok-media')
+const mapScrapperTiktokMedia = require('./sq-media-mapping/src/map-scrapper-tiktok-media')
 const token = require('./sq-pinterest-v3/src/lib/token')
 const { userSelf, userGet } = require('./sq-pinterest-v3/src/lib/user')
 const { pinsSelf, pinGet } = require('./sq-pinterest-v3/src/lib/pins')
@@ -21,7 +22,8 @@ module.exports = {
     mapTwitterMedia,
     mapStoryMedia,
     mapFacebookMedia,
-    mapTiktokMedia
+    mapTiktokMedia,
+    mapScrapperTiktokMedia
   },
   sqPinterest: {
     token,
