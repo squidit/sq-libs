@@ -41,7 +41,7 @@ async function mapScrapperTiktokMediaToSquidMedia (tiktokMedia) {
     tipo: 'video',
     upvotes: parseInt(get(tiktokMedia, 'diggCount', 0), 10),
     comentarios: parseInt(get(tiktokMedia, 'commentCount', 0), 10),
-    criadoEm: moment.unix(get(tiktokMedia, 'create_time')).toISOString(),
+    criadoEm: moment.unix(get(tiktokMedia, 'createTime')).toISOString(),
     links: getLinks(get(tiktokMedia, 'text', '')),
     legenda: get(tiktokMedia, 'text', ''),
     ad: isPub(get(tiktokMedia, 'text', '')),
