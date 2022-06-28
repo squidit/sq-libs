@@ -37,6 +37,7 @@ async function mapTiktokMediaToSquidMedia (tiktokMedia) {
   const url = get(tiktokMedia, 'share_url', '')
   const tiktokScraperVideo = await getVideoMeta(url)
 
+  const criadoEm = moment(get(tiktokMedia, 'create_time')).toISOString()
   return {
     obtidoEm: new Date(),
     origem: 'tiktok',
@@ -45,7 +46,7 @@ async function mapTiktokMediaToSquidMedia (tiktokMedia) {
     tipo: 'video',
     upvotes: parseInt(get(tiktokMedia, 'like_count', 0), 10),
     comentarios: parseInt(get(tiktokMedia, 'comment_count', 0), 10),
-    criadoEm: moment.unix(get(tiktokMedia, 'create_time')).toISOString(),
+    criadoEm,
     links: getLinks(get(tiktokMedia, 'video_description', '')),
     legenda: get(tiktokMedia, 'title', ''),
     ad: isPub(get(tiktokMedia, 'title', '')) || isPub(get(tiktokMedia, 'video_description', '')),
