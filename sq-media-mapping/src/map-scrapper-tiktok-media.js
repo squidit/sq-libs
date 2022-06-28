@@ -65,7 +65,11 @@ async function mapScrapperTiktokMediaToSquidMedia (tiktokMedia) {
         viewCount: parseInt(get(tiktokMedia, 'viewCount', 0), 10),
         likeCount: parseInt(get(tiktokMedia, 'diggCount', 0), 10),
         commentCount: parseInt(get(tiktokMedia, 'commentCount', 0), 10),
-        shares: parseInt(get(tiktokMedia, 'shareCount', 0), 10)
+        shares: parseInt(get(tiktokMedia, 'shareCount', 0), 10),
+        audienceByDevice: get(tiktokMedia, 'lifetime_device_distribution', []),
+        audienceByGender: get(tiktokMedia, 'lifetime_gender_distribution', []),
+        audienceByAge: get(tiktokMedia, 'lifetime_top_age_distribution', []),
+        audienceByCountry: get(tiktokMedia, 'lifetime_top_country_distribution', [])
       },
       description: get(tiktokMedia, 'text'),
       duration: (get(tiktokMedia, 'videoMeta.duration', 0), 10),
