@@ -33,7 +33,7 @@ async function mapScrapperTiktokMediaToSquidMedia (tiktokMedia) {
   const mentionsTitle = getMentions(get(tiktokMedia, 'text', ''))
   const mentionsDescription = getMentions(get(tiktokMedia, 'text', ''))
 
-  const criadoEm = moment(get(tiktokMedia, 'createTime')).toISOString()
+  const criadoEm = moment.unix(get(tiktokMedia, 'createTime')).toISOString()
   return {
     obtidoEm: new Date(),
     origem: 'tiktok',
