@@ -2,7 +2,6 @@ const isArray = require('lodash/isArray')
 const get = require('lodash/get')
 const map = require('lodash/map')
 const moment = require('moment')
-const { getVideoMeta } = require('tiktok-scraper')
 
 function getLinks (description) {
   if (!description) return description
@@ -35,7 +34,6 @@ async function mapTiktokMediaToSquidMedia (tiktokMedia) {
   const mentionsDescription = getMentions(get(tiktokMedia, 'video_description', ''))
 
   const url = get(tiktokMedia, 'share_url', '')
-  const tiktokScraperVideo = await getVideoMeta(url)
 
   const criadoEm = moment(get(tiktokMedia, 'create_time')).toISOString()
   return {
@@ -53,16 +51,9 @@ async function mapTiktokMediaToSquidMedia (tiktokMedia) {
     mentions: mentionsTitle.concat(mentionsDescription),
     imagens: {
       resolucaoPadrao: {
-        url: get(tiktokScraperVideo.collector[0], 'imageUrl', ''),
+        url: get(tiktokMedia, 'cover_image_url', ''),
         width: get(tiktokMedia, 'width', 540),
         height: get(tiktokMedia, 'height', 480)
-      }
-    },
-    videos: {
-      resolucaoPadrao: {
-        url: get(tiktokScraperVideo.collector[0], 'videoUrl', ''),
-        width: get(tiktokScraperVideo.collector[0], 'videoMeta.width', 540),
-        height: get(tiktokScraperVideo.collector[0], 'videoMeta.height', 480)
       }
     },
     metadados: {
