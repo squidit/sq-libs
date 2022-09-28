@@ -77,12 +77,12 @@ async function mapTiktokMediaToSquidMedia (tiktokMedia) {
         audienceByCountry: get(tiktokMedia, 'lifetime_top_country_distribution', []),
         reach: get(tiktokMedia, 'reach', 0),
         videoCompletionRate: get(tiktokMedia, 'video_completion_rate', 0),
-        totalPlayTime: lodash.get(tiktokMedia, 'total_play_time', 0),
-        averageViewTime: lodash.get(tiktokMedia, 'average_view_time', 0),
-        twoSecondsViews: lodash.get(tiktokMedia, 'two_seconds_views', 0),
-        sixSecondsViews: lodash.get(tiktokMedia, 'six_seconds_views', 0),
-        dailyBreakdown: lodash.get(tiktokMedia, 'daily_breakdown', []),
-        videoViewsBySource: lodash.get(tiktokMedia, 'video_views_by_source', {})
+        totalPlayTime: get(tiktokMedia, 'total_play_time', 0),
+        averageViewTime: get(tiktokMedia, 'average_view_time', 0),
+        twoSecondsViews: get(tiktokMedia, 'two_seconds_views', 0),
+        sixSecondsViews: get(tiktokMedia, 'six_seconds_views', 0),
+        dailyBreakdown: get(tiktokMedia, 'daily_breakdown', []),
+        videoViewsBySource: get(tiktokMedia, 'video_views_by_source', {})
 
       },
       description: get(tiktokMedia, 'video_description'),
