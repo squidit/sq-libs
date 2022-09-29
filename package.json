@@ -1,6 +1,6 @@
 {
   "name": "sq-libs",
-  "version": "2209.2.3",
+  "version": "2209.2.6",
   "description": "Projeto que agrupa libs privadas da organização Squid",
   "main": "index.js",
   "scripts": {
@@ -34,7 +34,6 @@
   "dependencies": {
     "got": "^9.2.2",
     "lodash": "^4.15.0",
-    "tiktok-scraper": "^1.4.36",
     "moment": "^2.29.1"
   }
 }

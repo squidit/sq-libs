@@ -2,7 +2,6 @@ const isArray = require('lodash/isArray')
 const get = require('lodash/get')
 const map = require('lodash/map')
 const moment = require('moment')
-const { getVideoMeta } = require('tiktok-scraper')
 
 function getLinks (description) {
   if (!description) return description
@@ -34,9 +33,6 @@ async function mapTiktokMediaToSquidMedia (tiktokMedia) {
   const mentionsTitle = getMentions(get(tiktokMedia, 'title', ''))
   const mentionsDescription = getMentions(get(tiktokMedia, 'video_description', ''))
 
-  const url = get(tiktokMedia, 'share_url', '')
-  const tiktokScraperVideo = await getVideoMeta(url)
-
   const criadoEm = moment(get(tiktokMedia, 'create_time')).toISOString()
   return {
     obtidoEm: new Date(),
@@ -53,16 +49,16 @@ async function mapTiktokMediaToSquidMedia (tiktokMedia) {
     mentions: mentionsTitle.concat(mentionsDescription),
     imagens: {
       resolucaoPadrao: {
-        url: get(tiktokScraperVideo.collector[0], 'imageUrl', ''),
+        url: get(tiktokMedia, 'cover_image_url', ''),
         width: get(tiktokMedia, 'width', 540),
         height: get(tiktokMedia, 'height', 480)
       }
     },
     videos: {
       resolucaoPadrao: {
-        url: get(tiktokScraperVideo.collector[0], 'videoUrl', ''),
-        width: get(tiktokScraperVideo.collector[0], 'videoMeta.width', 540),
-        height: get(tiktokScraperVideo.collector[0], 'videoMeta.height', 480)
+        url: get(tiktokMedia, 'embed_link', ''),
+        width: get(tiktokMedia, 'width', 540),
+        height: get(tiktokMedia, 'height', 480)
       }
     },
     metadados: {
@@ -77,12 +73,12 @@ async function mapTiktokMediaToSquidMedia (tiktokMedia) {
         audienceByCountry: get(tiktokMedia, 'lifetime_top_country_distribution', []),
         reach: get(tiktokMedia, 'reach', 0),
         videoCompletionRate: get(tiktokMedia, 'video_completion_rate', 0),
-        totalPlayTime: lodash.get(tiktokMedia, 'total_play_time', 0),
-        averageViewTime: lodash.get(tiktokMedia, 'average_view_time', 0),
-        twoSecondsViews: lodash.get(tiktokMedia, 'two_seconds_views', 0),
-        sixSecondsViews: lodash.get(tiktokMedia, 'six_seconds_views', 0),
-        dailyBreakdown: lodash.get(tiktokMedia, 'daily_breakdown', []),
-        videoViewsBySource: lodash.get(tiktokMedia, 'video_views_by_source', {})
+        totalPlayTime: get(tiktokMedia, 'total_play_time', 0),
+        averageViewTime: get(tiktokMedia, 'average_view_time', 0),
+        twoSecondsViews: get(tiktokMedia, 'two_seconds_views', 0),
+        sixSecondsViews: get(tiktokMedia, 'six_seconds_views', 0),
+        dailyBreakdown: get(tiktokMedia, 'daily_breakdown', []),
+        videoViewsBySource: get(tiktokMedia, 'video_views_by_source', {})
 
       },
       description: get(tiktokMedia, 'video_description'),
