@@ -27,13 +27,6 @@ function getCaption (fbMedia) {
   return get(fbMedia, 'caption', '')
 }
 
-function getUID (fbMedia) {
-  if (get(fbMedia, 'ig_id') && get(fbMedia, 'owner.ig_id')) {
-    return `${get(fbMedia, 'ig_id')}_${get(fbMedia, 'owner.ig_id')}`
-  }
-  return get(fbMedia, 'id')
-}
-
 function getUser (fbMedia) {
   const {owner} = fbMedia
   if (owner) {
@@ -66,7 +59,7 @@ function mapFacebookMediaToSquidMedia (fbMedia) {
   const media = {
     obtidoEm: new Date(),
     origem: 'instagram',
-    uid: getUID(fbMedia),
+    uid: get(fbMedia, 'id'),
     link: get(fbMedia, 'permalink') || get(fbMedia, 'link'),
     tipo: (mediaTypes[mediaType.toUpperCase()] || 'imagem'),
     upvotes: get(fbMedia, 'like_count', 0) || get(fbMedia, 'likes.count', 0),
