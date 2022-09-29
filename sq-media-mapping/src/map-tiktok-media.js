@@ -33,8 +33,6 @@ async function mapTiktokMediaToSquidMedia (tiktokMedia) {
   const mentionsTitle = getMentions(get(tiktokMedia, 'title', ''))
   const mentionsDescription = getMentions(get(tiktokMedia, 'video_description', ''))
 
-  const url = get(tiktokMedia, 'share_url', '')
-
   const criadoEm = moment(get(tiktokMedia, 'create_time')).toISOString()
   return {
     obtidoEm: new Date(),
