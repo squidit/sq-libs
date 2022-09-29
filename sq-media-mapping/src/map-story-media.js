@@ -9,7 +9,7 @@ function mapStoryMediaToSquidMedia (storyMedia) {
   const media = {
     obtidoEm: new Date(),
     origem: 'instagram',
-    uid: `${get(storyMedia, 'ig_id')}_${get(storyMedia, 'user.ig_id')}`,
+    uid: get(storyMedia, 'id'),
     tags: [],
     link: get(storyMedia, 'permalink'),
     tipo: (mediaTypes[get(storyMedia, 'media_type')] || 'imagem') + '_stories',
