@@ -119,6 +119,9 @@ function mapInstagramMediaToSquidMedia (instagramMedia) {
     }
   }
 
+  if (instagramMedia.metadata) media.metadata = instagramMedia.metadata
+  if (instagramMedia.references) media.referencias = instagramMedia.references
+
   return media
 }
 

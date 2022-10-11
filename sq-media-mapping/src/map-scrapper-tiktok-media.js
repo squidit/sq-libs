@@ -30,49 +30,49 @@ function getMentions (text) {
 }
 
 async function mapScrapperTiktokMediaToSquidMedia (tiktokMedia) {
-  const mentionsTitle = getMentions(get(tiktokMedia, 'text', ''))
-  const mentionsDescription = getMentions(get(tiktokMedia, 'text', ''))
+  const mentionsTitle = getMentions(get(tiktokMedia, 'desc', ''))
+  const mentionsDescription = getMentions(get(tiktokMedia, 'desc', ''))
 
   const criadoEm = moment.unix(get(tiktokMedia, 'createTime')).toISOString()
   return {
     obtidoEm: new Date(),
     origem: 'tiktok',
     uid: get(tiktokMedia, 'id'),
-    link: get(tiktokMedia, 'videoUrl'),
+    link: get(tiktokMedia, 'video.downloadAddr'),
     tipo: 'video',
-    upvotes: parseInt(get(tiktokMedia, 'diggCount', 0), 10),
-    comentarios: parseInt(get(tiktokMedia, 'commentCount', 0), 10),
+    upvotes: parseInt(get(tiktokMedia, 'stats.diggCount', 0), 10),
+    comentarios: parseInt(get(tiktokMedia, 'stats.commentCount', 0), 10),
     criadoEm,
-    links: getLinks(get(tiktokMedia, 'text', '')),
-    legenda: get(tiktokMedia, 'text', ''),
-    ad: isPub(get(tiktokMedia, 'text', '')),
+    links: getLinks(get(tiktokMedia, 'desc', '')),
+    legenda: get(tiktokMedia, 'desc', ''),
+    ad: isPub(get(tiktokMedia, 'desc', '')),
     mentions: mentionsTitle.concat(mentionsDescription),
     imagens: {
       resolucaoPadrao: {
-        url: get(tiktokMedia, 'imageUrl', ''),
-        width: get(tiktokMedia, 'videoMeta.width', 540),
-        height: get(tiktokMedia, 'videoMeta.height', 480)
+        url: get(tiktokMedia, 'video.cover', ''),
+        width: get(tiktokMedia, 'video.width', 540),
+        height: get(tiktokMedia, 'video.height', 480)
       }
     },
     videos: {
       resolucaoPadrao: {
-        url: get(tiktokMedia, 'videoUrl', ''),
-        width: get(tiktokMedia, 'videoMeta.width', 540),
-        height: get(tiktokMedia, 'videoMeta.height', 480)
+        url: get(tiktokMedia, 'video.downloadAddr', ''),
+        width: get(tiktokMedia, 'video.width', 540),
+        height: get(tiktokMedia, 'video.height', 480)
       }
     },
     metadados: {
       statistics: {
-        viewCount: parseInt(get(tiktokMedia, 'viewCount', 0), 10),
-        likeCount: parseInt(get(tiktokMedia, 'diggCount', 0), 10),
-        commentCount: parseInt(get(tiktokMedia, 'commentCount', 0), 10),
-        shares: parseInt(get(tiktokMedia, 'shareCount', 0), 10)
+        viewCount: parseInt(get(tiktokMedia, 'stats.playCount', 0), 10),
+        likeCount: parseInt(get(tiktokMedia, 'stats.diggCount', 0), 10),
+        commentCount: parseInt(get(tiktokMedia, 'stats.commentCount', 0), 10),
+        shares: parseInt(get(tiktokMedia, 'stats.shareCount', 0), 10)
       },
-      description: get(tiktokMedia, 'text'),
-      duration: (get(tiktokMedia, 'videoMeta.duration', 0), 10),
-      width: parseInt(get(tiktokMedia, 'videoMeta.width', 0), 10),
-      height: parseInt(get(tiktokMedia, 'videoMeta.height', 0), 10),
-      player: get(tiktokMedia, 'videoUrl')
+      description: get(tiktokMedia, 'desc'),
+      duration: (get(tiktokMedia, 'video.duration', 0), 10),
+      width: parseInt(get(tiktokMedia, 'video.width', 0), 10),
+      height: parseInt(get(tiktokMedia, 'video.height', 0), 10),
+      player: get(tiktokMedia, 'video.downloadAddr')
     },
     usuario: get(tiktokMedia, 'usuario')
   }
