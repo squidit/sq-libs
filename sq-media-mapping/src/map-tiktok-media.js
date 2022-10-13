@@ -34,6 +34,7 @@ async function mapTiktokMediaToSquidMedia (tiktokMedia) {
   const mentionsDescription = getMentions(get(tiktokMedia, 'video_description', ''))
 
   const criadoEm = moment(get(tiktokMedia, 'create_time')).toISOString()
+  const sparkAdsEndDate = moment(get(tiktokMedia, 'sparkAdsEndDate', null)).toISOString()
   return {
     obtidoEm: new Date(),
     origem: 'tiktok',
@@ -50,13 +51,6 @@ async function mapTiktokMediaToSquidMedia (tiktokMedia) {
     imagens: {
       resolucaoPadrao: {
         url: get(tiktokMedia, 'cover_image_url', ''),
-        width: get(tiktokMedia, 'width', 540),
-        height: get(tiktokMedia, 'height', 480)
-      }
-    },
-    videos: {
-      resolucaoPadrao: {
-        url: get(tiktokMedia, 'embed_link', ''),
         width: get(tiktokMedia, 'width', 540),
         height: get(tiktokMedia, 'height', 480)
       }
@@ -79,7 +73,6 @@ async function mapTiktokMediaToSquidMedia (tiktokMedia) {
         sixSecondsViews: get(tiktokMedia, 'six_seconds_views', 0),
         dailyBreakdown: get(tiktokMedia, 'daily_breakdown', []),
         videoViewsBySource: get(tiktokMedia, 'video_views_by_source', {})
-
       },
       description: get(tiktokMedia, 'video_description'),
       duration: (get(tiktokMedia, 'duration', 0), 10),
@@ -87,6 +80,9 @@ async function mapTiktokMediaToSquidMedia (tiktokMedia) {
       height: parseInt(get(tiktokMedia, 'height', 0), 10),
       player: get(tiktokMedia, 'embed_html')
     },
+    sparkAdsAuthCode: get(tiktokMedia, 'sparkAdsAuthCode', null),
+    sparkAdsEndDate,
+    sparkAdsRequestStatus: get(tiktokMedia, 'sparkAdsRequestStatus', null),
     usuario: get(tiktokMedia, 'usuario')
   }
 }
