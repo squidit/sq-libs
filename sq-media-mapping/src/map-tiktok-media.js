@@ -32,8 +32,7 @@ function getMentions (text) {
 function mapTiktokMediaToSquidMedia (tiktokMedia) {
   const mentionsTitle = getMentions(get(tiktokMedia, 'title', ''))
   const mentionsDescription = getMentions(get(tiktokMedia, 'video_description', ''))
-
-  const criadoEm = moment(get(tiktokMedia, 'create_time')).toISOString()
+  const criadoEm = moment.unix(get(tiktokMedia, 'create_time')).utc().toISOString()
   const sparkAdsEndDate = moment(get(tiktokMedia, 'sparkAdsEndDate', null)).toISOString()
   return {
     obtidoEm: new Date(),
