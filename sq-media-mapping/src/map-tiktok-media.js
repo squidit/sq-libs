@@ -29,7 +29,7 @@ function getMentions (text) {
   return results.filter(v => v && typeof v === 'string').map(tag => tag.trim().replace('@', ''))
 }
 
-async function mapTiktokMediaToSquidMedia (tiktokMedia) {
+function mapTiktokMediaToSquidMedia (tiktokMedia) {
   const mentionsTitle = getMentions(get(tiktokMedia, 'title', ''))
   const mentionsDescription = getMentions(get(tiktokMedia, 'video_description', ''))
 
@@ -89,6 +89,6 @@ async function mapTiktokMediaToSquidMedia (tiktokMedia) {
 
 module.exports = function mapTiktokMedia (medias) {
   return isArray(medias)
-    ? map(medias, mapTiktokMediaToSquidMedia)
+    ? medias.map(mapTiktokMediaToSquidMedia)
     : mapTiktokMediaToSquidMedia(medias)
 }
