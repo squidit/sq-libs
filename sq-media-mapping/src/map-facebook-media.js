@@ -70,10 +70,10 @@ function mapFacebookMediaToSquidMedia (fbMedia) {
     mentions: getMentions(caption),
     ad: isPub(caption),
     usuario: getUser(fbMedia),
-    metadados: {
+    metadados: get(fbMedia, 'metadata', {
       idFacebook: get(fbMedia, 'id'),
       productType: get(fbMedia, 'media_product_type', '').toLowerCase()
-    }
+    })
   }
 
   if (media.tipo === 'video') {
