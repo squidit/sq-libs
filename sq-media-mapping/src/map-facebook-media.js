@@ -71,7 +71,8 @@ function mapFacebookMediaToSquidMedia (fbMedia) {
     ad: isPub(caption),
     usuario: getUser(fbMedia),
     metadados: {
-      idFacebook: get(fbMedia, 'id')
+      idFacebook: get(fbMedia, 'id'),
+      productType: get(fbMedia, 'media_product_type', '').toLowerCase()
     }
   }
 
