@@ -91,17 +91,17 @@ function mapFacebookMediaToSquidMedia (fbMedia) {
     }
     media.imagens = {
       resolucaoPadrao: {
-        url: get(fbMedia, 'thumbnail_url', '') || get(fbMedia, 'images.standard_resolution.url', ''),
+        url: get(fbMedia, 'thumbnail_url', ''),
         width: 640,
         height: 640
       },
       resolucaoMedia: {
-        url: get(fbMedia, 'thumbnail_url', '') || get(fbMedia, 'images.low_resolution.url', ''),
+        url: get(fbMedia, 'thumbnail_url', ''),
         width: 320,
         height: 320
       },
       thumbnail: {
-        url: get(fbMedia, 'thumbnail_url', '') || get(fbMedia, 'images.thumbail.url', ''),
+        url: get(fbMedia, 'thumbnail_url', ''),
         width: 150,
         height: 150
       }
@@ -109,17 +109,17 @@ function mapFacebookMediaToSquidMedia (fbMedia) {
   } else {
     media.imagens = {
       resolucaoPadrao: {
-        url: get(fbMedia, 'media_url', '') || get(fbMedia, 'images.standard_resolution.url', ''),
+        url: get(fbMedia, 'media_url', ''),
         width: 640,
         height: 640
       },
       resolucaoMedia: {
-        url: get(fbMedia, 'media_url', '') || get(fbMedia, 'images.low_resolution.url', ''),
+        url: get(fbMedia, 'media_url', ''),
         width: 320,
         height: 320
       },
       thumbnail: {
-        url: get(fbMedia, 'media_url', '') || get(fbMedia, 'images.thumbnail_resolution.url', ''),
+        url: get(fbMedia, 'media_url', ''),
         width: 150,
         height: 150
       }
