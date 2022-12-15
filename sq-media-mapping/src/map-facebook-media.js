@@ -27,11 +27,15 @@ function getCaption (fbMedia) {
   return get(fbMedia, 'caption', '')
 }
 
-function getUser (fbMedia) {
+function getUser (fbMedia, idProfile) {
   const {owner} = fbMedia
   if (owner) {
+    let fieldIdUser = 'ig_id'
+    if (idProfile === get(fbMedia, 'owner.id')) {
+      fieldIdUser = 'id'
+    }
     return {
-      id: `instagram|${get(fbMedia, 'owner.ig_id')}`,
+      id: `instagram|${get(fbMedia, `owner.${fieldIdUser}`)}`,
       username: get(fbMedia, 'owner.username', ''),
       foto: get(fbMedia, 'owner.profile_picture_url', 'https://igcdn-photos-e-a.akamaihd.net/hphotos-ak-xtp1/t51.2885-19/11906329_960233084022564_1448528159_a.jpg'),
       nome: get(fbMedia, 'owner.name', '')
@@ -54,7 +58,7 @@ function mapFacebookMediaToSquidMedia (fbMedia) {
     CAROUSEL: 'carousel'
   }
 
-  const caption = getCaption(fbMedia)
+  const caption = getCaption(fbMedia, idProfile = null)
   const mediaType = get(fbMedia, 'media_type') || get(fbMedia, 'type')
   const media = {
     obtidoEm: new Date(),
@@ -69,7 +73,7 @@ function mapFacebookMediaToSquidMedia (fbMedia) {
     tags: getTags(caption),
     mentions: getMentions(caption),
     ad: isPub(caption),
-    usuario: getUser(fbMedia),
+    usuario: getUser(fbMedia, idProfile),
     metadados: get(fbMedia, 'metadata', {
       idFacebook: get(fbMedia, 'id'),
       productType: get(fbMedia, 'media_product_type', '').toLowerCase()
