@@ -31,7 +31,7 @@ function getUser (fbMedia, idProfile) {
   const {owner} = fbMedia
   if (owner) {
     let fieldIdUser = 'id'
-    if (idProfile === get(fbMedia, 'owner.ig_id')) {
+    if (idProfile === `${get(fbMedia, 'owner.ig_id')}`) {
       fieldIdUser = 'ig_id'
     }
     return {
