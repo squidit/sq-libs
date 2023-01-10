@@ -30,9 +30,9 @@ function getCaption (fbMedia) {
 function getUser (fbMedia, idProfile) {
   const {owner} = fbMedia
   if (owner) {
-    let fieldIdUser = 'ig_id'
-    if (idProfile === get(fbMedia, 'owner.id')) {
-      fieldIdUser = 'id'
+    let fieldIdUser = 'id'
+    if (idProfile === get(fbMedia, 'owner.ig_id')) {
+      fieldIdUser = 'ig_id'
     }
     return {
       id: `instagram|${get(fbMedia, `owner.${fieldIdUser}`)}`,
@@ -50,7 +50,7 @@ function getUser (fbMedia, idProfile) {
   }
 }
 
-function mapFacebookMediaToSquidMedia (fbMedia) {
+function mapFacebookMediaToSquidMedia (fbMedia, idProfile) {
   const mediaTypes = {
     IMAGE: 'imagem',
     VIDEO: 'video',
@@ -58,7 +58,7 @@ function mapFacebookMediaToSquidMedia (fbMedia) {
     CAROUSEL: 'carousel'
   }
 
-  const caption = getCaption(fbMedia, idProfile = null)
+  const caption = getCaption(fbMedia)
   const mediaType = get(fbMedia, 'media_type') || get(fbMedia, 'type')
   const media = {
     obtidoEm: new Date(),
@@ -139,8 +139,8 @@ function mapFacebookMediaToSquidMedia (fbMedia) {
   return media
 }
 
-module.exports = function mapFacebookMedia (fbMedia) {
+module.exports = function mapFacebookMedia (fbMedia, idProfile = null) {
   return isArray(fbMedia)
-    ? fbMedia.map(mapFacebookMediaToSquidMedia)
-    : mapFacebookMediaToSquidMedia(fbMedia)
+    ? fbMedia.map(m => mapFacebookMediaToSquidMedia(m, idProfile))
+    : mapFacebookMediaToSquidMedia(fbMedia, idProfile)
 }
