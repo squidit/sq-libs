@@ -23,7 +23,8 @@ function mapStoryMediaToSquidMedia (storyMedia) {
       username: get(storyMedia, 'user.username', ''),
       foto: get(storyMedia, 'user.profile_picture_url', 'https://igcdn-photos-e-a.akamaihd.net/hphotos-ak-xtp1/t51.2885-19/11906329_960233084022564_1448528159_a.jpg'),
       nome: get(storyMedia, 'user.name', '')
-    }
+    },
+    metricsAvailable: get(storyMedia, 'metricsAvailable', '')
   }
 
   if (media.tipo === 'video_stories') {
