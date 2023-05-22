@@ -34,7 +34,7 @@ function mapTiktokMediaToSquidMedia (tiktokMedia) {
   const mentionsDescription = getMentions(get(tiktokMedia, 'video_description', ''))
   const criadoEm = moment.unix(get(tiktokMedia, 'create_time')).utc().toISOString()
   const sparkAdsEndDate = moment(get(tiktokMedia, 'sparkAdsEndDate', null)).toISOString()
-  return {
+  const mappedMedia = {
     obtidoEm: new Date(),
     origem: 'tiktok',
     uid: get(tiktokMedia, 'id'),
@@ -84,6 +84,16 @@ function mapTiktokMediaToSquidMedia (tiktokMedia) {
     sparkAdsRequestStatus: get(tiktokMedia, 'sparkAdsRequestStatus', null),
     usuario: get(tiktokMedia, 'usuario')
   }
+  if (tiktokMedia.media_url) {
+    mappedMedia.videos = {
+      resolucaoPadrao: {
+        url: get(tiktokMedia, 'media_url', ''),
+        width: get(tiktokMedia, 'width', 540),
+        height: get(tiktokMedia, 'height', 480)
+      }
+    }
+  }
+  return mappedMedia
 }
 
 module.exports = function mapTiktokMedia (medias) {
