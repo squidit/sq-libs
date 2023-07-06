@@ -54,6 +54,13 @@ function mapTiktokMediaToSquidMedia (tiktokMedia) {
         height: get(tiktokMedia, 'height', 480)
       }
     },
+    videos: {
+      resolucaoPadrao: {
+        url: get(tiktokMedia, 'media_url', ''),
+        width: get(tiktokMedia, 'width', 540),
+        height: get(tiktokMedia, 'height', 480)
+      }
+    },
     metadados: {
       statistics: {
         viewCount: parseInt(get(tiktokMedia, 'view_count', 0), 10),
