@@ -71,7 +71,10 @@ function mapTiktokMediaToSquidMedia (tiktokMedia) {
         twoSecondsViews: get(tiktokMedia, 'two_seconds_views', 0),
         sixSecondsViews: get(tiktokMedia, 'six_seconds_views', 0),
         dailyBreakdown: get(tiktokMedia, 'daily_breakdown', []),
-        videoViewsBySource: get(tiktokMedia, 'video_views_by_source', {})
+        videoViewsBySource: get(tiktokMedia, 'video_views_by_source', {}),
+        videoViewsPaid: get(tiktokMedia, 'video_views_paid', 0),
+        videoViewsOrganic: get(tiktokMedia, 'video_views_organic', 0),
+        videoBoostedDate: get(tiktokMedia, 'video_boosted_date', '')
       },
       description: get(tiktokMedia, 'video_description'),
       duration: (get(tiktokMedia, 'duration', 0), 10),
