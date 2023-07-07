@@ -74,7 +74,7 @@ function mapTiktokMediaToSquidMedia (tiktokMedia) {
         videoViewsBySource: get(tiktokMedia, 'video_views_by_source', {})
       },
       description: get(tiktokMedia, 'video_description'),
-      duration: (get(tiktokMedia, 'duration', 0), 10),
+      duration: get(tiktokMedia, 'duration', 0),
       width: parseInt(get(tiktokMedia, 'width', 0), 10),
       height: parseInt(get(tiktokMedia, 'height', 0), 10),
       player: get(tiktokMedia, 'embed_html')
