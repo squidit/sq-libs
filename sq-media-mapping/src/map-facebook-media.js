@@ -60,6 +60,7 @@ function mapFacebookMediaToSquidMedia (fbMedia, idProfile) {
 
   const caption = getCaption(fbMedia)
   const mediaType = get(fbMedia, 'media_type') || get(fbMedia, 'type')
+  const criadoEm = new Date(get(fbMedia, 'timestamp') || (get(fbMedia, 'created_time', 0) * 1000) || new Date())
   const media = {
     obtidoEm: new Date(),
     origem: 'instagram',
@@ -68,7 +69,8 @@ function mapFacebookMediaToSquidMedia (fbMedia, idProfile) {
     tipo: (mediaTypes[mediaType.toUpperCase()] || 'imagem'),
     upvotes: get(fbMedia, 'like_count', 0) || get(fbMedia, 'likes.count', 0),
     comentarios: get(fbMedia, 'comments_count', 0) || get(fbMedia, 'comments.count', 0),
-    criadoEm: new Date(get(fbMedia, 'timestamp') || (get(fbMedia, 'created_time', 0) * 1000) || new Date()),
+    criadoEm,
+    lastUpdate: criadoEm,
     legenda: caption,
     tags: getTags(caption),
     mentions: getMentions(caption),

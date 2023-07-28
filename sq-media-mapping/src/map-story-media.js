@@ -5,6 +5,7 @@ function mapStoryMediaToSquidMedia (storyMedia) {
     IMAGE: 'imagem',
     VIDEO: 'video'
   }
+  const criadoEm = new Date(get(storyMedia, 'timestamp', new Date()))
 
   const media = {
     obtidoEm: new Date(),
@@ -15,7 +16,8 @@ function mapStoryMediaToSquidMedia (storyMedia) {
     tipo: (mediaTypes[get(storyMedia, 'media_type')] || 'imagem') + '_stories',
     upvotes: get(storyMedia, 'likes_count', 0),
     comentarios: get(storyMedia, 'comments_count', 0),
-    criadoEm: new Date(get(storyMedia, 'timestamp', new Date())),
+    criadoEm,
+    lastUpdate: criadoEm,
     legenda: get(storyMedia, 'caption', ''),
     detection: get(storyMedia, 'detection', null),
     usuario: {

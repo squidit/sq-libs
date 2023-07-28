@@ -37,6 +37,7 @@ function mapInstagramMediaToSquidMedia (instagramMedia) {
     latitude: get(instagramMedia, 'location.latitude', 0),
     longitude: get(instagramMedia, 'location.longitude', 0)
   }
+  const criadoEm = new Date(parseInt(get(instagramMedia, 'created_time'), 10) * 1000)
 
   const media = {
     obtidoEm: new Date(),
@@ -49,7 +50,8 @@ function mapInstagramMediaToSquidMedia (instagramMedia) {
     tipo: mediaTypes[get(instagramMedia, 'type')] || 'video',
     upvotes: get(instagramMedia, 'likes.count', 0),
     comentarios: get(instagramMedia, 'comments.count', 0),
-    criadoEm: new Date(parseInt(get(instagramMedia, 'created_time'), 10) * 1000),
+    criadoEm,
+    lastUpdate: criadoEm,
     legenda: get(instagramMedia, 'caption.text', ''),
     usuario: {
       id: `instagram|${get(instagramMedia, 'user.id', get(instagramMedia, 'id').split('_')[1])}`,

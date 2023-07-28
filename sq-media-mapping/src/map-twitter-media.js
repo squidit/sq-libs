@@ -53,6 +53,7 @@ function mapTwitterMediaToSquidMedia (data) {
     if (data.is_quote_status) typeTweet = 'quoted_tweet'
     else typeTweet = 'tweet'
   }
+  const criadoEm = new Date(data.created_at)
   const mappedMedia = {
     uid: data.id_str,
     tags: data.entities.hashtags.map(tag => (tag.text)),
@@ -64,7 +65,8 @@ function mapTwitterMediaToSquidMedia (data) {
     upvotes: data.favorite_count,
     comentarios: get(data, 'metrics.reply_count', 0),
     legenda: data.text,
-    criadoEm: new Date(data.created_at),
+    criadoEm,
+    lastUpdate: criadoEm,
     obtidoEm: new Date(),
     metadados: {
       in_reply_to_status_id_str: get(data, 'metrics.in_reply_to_status_id_str', null) || data.in_reply_to_status_id_str,
