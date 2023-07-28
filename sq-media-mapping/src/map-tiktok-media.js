@@ -43,6 +43,7 @@ function mapTiktokMediaToSquidMedia (tiktokMedia) {
     upvotes: parseInt(get(tiktokMedia, 'like_count', 0), 10),
     comentarios: parseInt(get(tiktokMedia, 'comment_count', 0), 10),
     criadoEm,
+    lastUpdate: criadoEm,
     links: getLinks(get(tiktokMedia, 'video_description', '')),
     legenda: get(tiktokMedia, 'title', ''),
     ad: isPub(get(tiktokMedia, 'title', '')) || isPub(get(tiktokMedia, 'video_description', '')),
