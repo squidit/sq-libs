@@ -48,13 +48,24 @@ function mapYoutubeMediaToSquidMedia (youtubeMedia) {
   const mentionsTitle = getMentions(get(youtubeMedia, 'snippet.title', ''))
   const mentionsDescription = getMentions(get(youtubeMedia, 'snippet.description', ''))
   const criadoEm = new Date(get(youtubeMedia, 'snippet.publishedAt'))
+  const durationMetrics = this.parseIso8601Duration(youtubeMedia.contentDetails.duration)
+  if(durationMetrics.minutes >= 2 || (durationMetrics.minutes >= 1 && durationMetrics.seconds >= 10)) {
+    typeOfMidia = 'video'
+  } else {
+      typeOfMidia = 'shorts'
+  }
+  const videoInfo = youtubeMedia.player.embedHtml.split('"')
+  const widthVideo = Number(videoInfo[1])
+  const heightVideo = Number(videoInfo[3])
+  const urlVideo = `https:${(videoInfo[5])}`
+
   return {
     obtidoEm: new Date(),
     origem: 'youtube',
     uid: get(youtubeMedia, 'id'),
     tags: get(youtubeMedia, 'snippet.tags', []),
     link: `https://www.youtube.com/watch?v=${get(youtubeMedia, 'id')}`,
-    tipo: 'video',
+    tipo: typeOfMidia,
     upvotes: parseInt(get(youtubeMedia, 'statistics.likeCount', 0), 10),
     comentarios: parseInt(get(youtubeMedia, 'statistics.commentCount', 0), 10),
     criadoEm,
@@ -78,6 +89,13 @@ function mapYoutubeMediaToSquidMedia (youtubeMedia) {
         url: get(youtubeMedia, 'snippet.thumbnails.default.url'),
         width: get(youtubeMedia, 'snippet.thumbnails.default.width', 120),
         height: get(youtubeMedia, 'snippet.thumbnails.default.height', 90)
+      }
+    },
+    videos: {
+      resolucaoPadrao: {
+        url: urlVideo,
+        width: widthVideo,
+        height: heightVideo
       }
     },
     usuario: {
