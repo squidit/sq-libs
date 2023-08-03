@@ -1,4 +1,5 @@
 const { get, isArray, uniq } = require('lodash')
+const moment = require('moment')
 
 function getTags (caption) {
   if (!caption) return []
@@ -70,7 +71,7 @@ function mapFacebookMediaToSquidMedia (fbMedia, idProfile) {
     upvotes: get(fbMedia, 'like_count', 0) || get(fbMedia, 'likes.count', 0),
     comentarios: get(fbMedia, 'comments_count', 0) || get(fbMedia, 'comments.count', 0),
     criadoEm,
-    lastUpdate: criadoEm,
+    lastUpdate: moment().toISOString(),
     legenda: caption,
     tags: getTags(caption),
     mentions: getMentions(caption),

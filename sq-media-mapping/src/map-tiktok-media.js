@@ -1,6 +1,5 @@
 const isArray = require('lodash/isArray')
 const get = require('lodash/get')
-const map = require('lodash/map')
 const moment = require('moment')
 
 function getLinks (description) {
@@ -43,7 +42,7 @@ function mapTiktokMediaToSquidMedia (tiktokMedia) {
     upvotes: parseInt(get(tiktokMedia, 'like_count', 0), 10),
     comentarios: parseInt(get(tiktokMedia, 'comment_count', 0), 10),
     criadoEm,
-    lastUpdate: criadoEm,
+    lastUpdate: moment().toISOString(),
     links: getLinks(get(tiktokMedia, 'video_description', '')),
     legenda: get(tiktokMedia, 'title', ''),
     ad: isPub(get(tiktokMedia, 'title', '')) || isPub(get(tiktokMedia, 'video_description', '')),
