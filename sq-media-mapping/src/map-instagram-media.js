@@ -52,7 +52,7 @@ function mapInstagramMediaToSquidMedia (instagramMedia) {
     upvotes: get(instagramMedia, 'likes.count', 0),
     comentarios: get(instagramMedia, 'comments.count', 0),
     criadoEm,
-    lastUpdate: moment().toISOString(),
+    lastUpdate: moment(),
     legenda: get(instagramMedia, 'caption.text', ''),
     usuario: {
       id: `instagram|${get(instagramMedia, 'user.id', get(instagramMedia, 'id').split('_')[1])}`,

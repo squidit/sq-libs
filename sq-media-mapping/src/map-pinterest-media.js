@@ -12,7 +12,7 @@ function mapPinterestMediaToSquidMedia (pinterestMedia) {
     tipo: get(pinterestMedia, 'is_video') ? 'video' : 'imagem',
     comentarios: get(pinterestMedia, 'comment_count', 0),
     criadoEm: new Date(get(pinterestMedia, 'created_at')),
-    lastUpdate: moment().toISOString(),
+    lastUpdate: moment(),
     legenda: get(pinterestMedia, 'description', ''),
     usuario: {
       id: get(pinterestMedia, 'user.id'),
