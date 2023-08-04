@@ -1,7 +1,6 @@
 const isArray = require('lodash/isArray')
 const get = require('lodash/get')
 const map = require('lodash/map')
-const moment = require('moment')
 
 function mapPinterestMediaToSquidMedia (pinterestMedia) {
   const media = {
@@ -12,7 +11,7 @@ function mapPinterestMediaToSquidMedia (pinterestMedia) {
     tipo: get(pinterestMedia, 'is_video') ? 'video' : 'imagem',
     comentarios: get(pinterestMedia, 'comment_count', 0),
     criadoEm: new Date(get(pinterestMedia, 'created_at')),
-    lastUpdate: moment(),
+    lastUpdate: new Date(),
     legenda: get(pinterestMedia, 'description', ''),
     usuario: {
       id: get(pinterestMedia, 'user.id'),

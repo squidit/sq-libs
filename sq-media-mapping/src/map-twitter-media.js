@@ -1,6 +1,5 @@
 const isArray = require('lodash/isArray')
 const get = require('lodash/get')
-const moment = require('moment')
 
 function getCenter (arr) {
   return arr.reduce((x, y) => ([x[0] + (y[0] / arr.length), (x[1] + (y[1] / arr.length))]), [0, 0])
@@ -67,7 +66,7 @@ function mapTwitterMediaToSquidMedia (data) {
     comentarios: get(data, 'metrics.reply_count', 0),
     legenda: data.text,
     criadoEm,
-    lastUpdate: moment(),
+    lastUpdate: new Date(),
     obtidoEm: new Date(),
     metadados: {
       in_reply_to_status_id_str: get(data, 'metrics.in_reply_to_status_id_str', null) || data.in_reply_to_status_id_str,

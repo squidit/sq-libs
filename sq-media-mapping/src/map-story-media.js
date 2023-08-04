@@ -1,5 +1,4 @@
 const { get, isArray } = require('lodash')
-const moment = require('moment')
 
 function mapStoryMediaToSquidMedia (storyMedia) {
   const mediaTypes = {
@@ -18,7 +17,7 @@ function mapStoryMediaToSquidMedia (storyMedia) {
     upvotes: get(storyMedia, 'likes_count', 0),
     comentarios: get(storyMedia, 'comments_count', 0),
     criadoEm,
-    lastUpdate: moment(),
+    lastUpdate: new Date(),
     legenda: get(storyMedia, 'caption', ''),
     detection: get(storyMedia, 'detection', null),
     usuario: {

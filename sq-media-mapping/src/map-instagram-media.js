@@ -1,6 +1,5 @@
 const get = require('lodash/get')
 const uniq = require('lodash/uniq')
-const moment = require('moment')
 
 function getTags (caption) {
   const rgx = /(#\w+)/g
@@ -52,7 +51,7 @@ function mapInstagramMediaToSquidMedia (instagramMedia) {
     upvotes: get(instagramMedia, 'likes.count', 0),
     comentarios: get(instagramMedia, 'comments.count', 0),
     criadoEm,
-    lastUpdate: moment(),
+    lastUpdate: new Date(),
     legenda: get(instagramMedia, 'caption.text', ''),
     usuario: {
       id: `instagram|${get(instagramMedia, 'user.id', get(instagramMedia, 'id').split('_')[1])}`,
