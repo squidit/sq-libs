@@ -58,7 +58,7 @@ function mapYoutubeMediaToSquidMedia (youtubeMedia) {
     upvotes: parseInt(get(youtubeMedia, 'statistics.likeCount', 0), 10),
     comentarios: parseInt(get(youtubeMedia, 'statistics.commentCount', 0), 10),
     criadoEm,
-    lastUpdate: criadoEm,
+    lastUpdate: new Date(),
     links: getLinks(get(youtubeMedia, 'snippet.description', '')),
     legenda: get(youtubeMedia, 'snippet.title', ''),
     ad: isPub(get(youtubeMedia, 'snippet.title', '')) || isPub(get(youtubeMedia, 'snippet.description', '')),

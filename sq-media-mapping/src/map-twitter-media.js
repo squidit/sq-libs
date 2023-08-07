@@ -66,7 +66,7 @@ function mapTwitterMediaToSquidMedia (data) {
     comentarios: get(data, 'metrics.reply_count', 0),
     legenda: data.text,
     criadoEm,
-    lastUpdate: criadoEm,
+    lastUpdate: new Date(),
     obtidoEm: new Date(),
     metadados: {
       in_reply_to_status_id_str: get(data, 'metrics.in_reply_to_status_id_str', null) || data.in_reply_to_status_id_str,
