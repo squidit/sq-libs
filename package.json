@@ -1,6 +1,6 @@
 {
   "name": "sq-libs",
-  "version": "2307.2.1",
+  "version": "2308.1.2",
   "description": "Projeto que agrupa libs privadas da organização Squid",
   "main": "index.js",
   "scripts": {
