@@ -48,7 +48,7 @@ function mapYoutubeMediaToSquidMedia (youtubeMedia) {
   const mentionsTitle = getMentions(get(youtubeMedia, 'snippet.title', ''))
   const mentionsDescription = getMentions(get(youtubeMedia, 'snippet.description', ''))
   const criadoEm = new Date(get(youtubeMedia, 'snippet.publishedAt'))
-  const durationMetrics = this.parseIso8601Duration(youtubeMedia.contentDetails.duration)
+  const durationMetrics = parseIso8601Duration(youtubeMedia.contentDetails.duration)
   if(durationMetrics.minutes >= 2 || (durationMetrics.minutes >= 1 && durationMetrics.seconds >= 10)) {
     typeOfMidia = 'video'
   } else {
