@@ -1,5 +1,6 @@
 const isArray = require('lodash/isArray')
 const get = require('lodash/get')
+const moment = require('moment')
 
 function getLinks (description) {
   if (!description) return description
