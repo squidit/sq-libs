@@ -56,10 +56,10 @@ function mapTwitterMediaToSquidMedia (data) {
   const criadoEm = new Date(data.created_at)
   const mappedMedia = {
     uid: data.id_str,
-    tags: data.entities.hashtags ? data.entities.hashtags.map(tag => (tag.text)) : [],
-    mentions: data.entities.user_mentions ? data.entities.user_mentions.map(user => user.screen_name) : [],
+    tags: data.entities.hashtags ? data.entities.hashtags.map(tag => (tag.tag)) : [],
+    mentions: data.entities.mentions ? data.entities.mentions.map(user => user.username) : [],
     link: getLink(data),
-    ad: isPub(data.entities.hashtags ? data.entities.hashtags.map(tag => (tag.text)) : []),
+    ad: isPub(data.entities.hashtags ? data.entities.hashtags.map(tag => (tag.tag)) : []),
     tipo: media.type,
     origem: 'twitter',
     upvotes: data.favorite_count,
