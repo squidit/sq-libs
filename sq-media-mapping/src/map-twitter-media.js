@@ -25,8 +25,8 @@ function getMediaType (tweet) {
 }
 
 function getLink (data) {
-  const username = get(data, 'user.screen_name', '')
-  const idTweet = get(data, 'id_str', '')
+  const username = get(data, 'metadata.username', '')
+  const idTweet = get(data, 'id', '')
   return `https://twitter.com/${username}/status/${idTweet}`
 }
 
