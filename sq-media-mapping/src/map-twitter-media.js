@@ -55,14 +55,14 @@ function mapTwitterMediaToSquidMedia (data) {
   }
   const criadoEm = new Date(data.created_at)
   const mappedMedia = {
-    uid: data.id_str,
+    uid: data.id,
     tags: data.entities.hashtags ? data.entities.hashtags.map(tag => (tag.tag)) : [],
     mentions: data.entities.mentions ? data.entities.mentions.map(user => user.username) : [],
     link: getLink(data),
     ad: isPub(data.entities.hashtags ? data.entities.hashtags.map(tag => (tag.tag)) : []),
     tipo: media.type,
     origem: 'twitter',
-    upvotes: data.favorite_count,
+    upvotes: get(data, 'metrics.like_count', 0),
     comentarios: get(data, 'metrics.reply_count', 0),
     legenda: data.text,
     criadoEm,
@@ -73,27 +73,27 @@ function mapTwitterMediaToSquidMedia (data) {
       source: get(data, 'metrics.source', null) || data.source,
       type_tweet: typeTweet,
       impressions: get(data, 'metrics.impression_count', 0),
-      likes: get(data, 'metrics.favorite_count', 0) || get(data, 'favorite_count', 0),
+      likes: get(data, 'metrics.like_count', 0),
       replies: get(data, 'metrics.reply_count', 0),
       video_views: get(data, 'metrics.video_views', 0) || get(data, 'metrics.mediaMetrics[0].organic_metrics.view_count', 0) || get(data, 'metrics.mediaMetrics[0].public_metrics.view_count', 0),
       user_profile_clicks: get(data, 'metrics.user_profile_clicks', 0) || get(data, 'user_profile_clicks', 0),
-      url_clicks: get(data, 'metrics.url_clicks', 0) || get(data, 'metrics.url_link_clicks', 0),
+      url_clicks: get(data, 'metrics.url_clicks', get(data, 'metrics.urlClicks', 0)),
       tax_engagement: get(data, 'metrics.engagement', 0),
       polls: data.polls || [],
       retweets: get(data, 'retweet_count', 0),
       conversation_id: get(data, 'conversation_id', null),
       user: {
-        followers_count: data.user.followers_count,
-        friends_count: data.user.friends_count,
-        created_at: data.user.created_at,
-        url: data.user.url
+        followers_count: get(data, 'user.followers_count'),
+        friends_count: get(data, 'user.friends_count'),
+        created_at: get(data, 'user.created_at'),
+        url: get(data, 'user.url')
       }
     },
     usuario: {
-      id: `twitter|${data.user.id_str}`,
-      username: data.user.screen_name,
-      foto: data.user.profile_image_url_https,
-      nome: data.user.name
+      id: `twitter|${data.metadata.idUser}`,
+      username: get(data, 'metadata.username'),
+      foto: get(data, 'user.profile_image_url_https'),
+      nome: get(data, 'user.name')
     }
   }
   if (['imagem', 'video'].includes(mappedMedia.tipo)) {
