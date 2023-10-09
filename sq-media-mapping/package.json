@@ -1,6 +1,6 @@
 {
   "name": "squid-media-mapping",
-  "version": "2308.1.1",
+  "version": "2310.1.0",
   "description": "Mapping functions from whatever to media",
   "main": "index.js",
   "scripts": {
