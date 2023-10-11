@@ -44,13 +44,15 @@ function mapTwitterMediaToSquidMedia (data) {
   if (data.referenced_tweets && data.referenced_tweets.length > 0) {
     typeTweet = data.referenced_tweets[0].type
   }
+  const hashtags = get(data, 'hashtags', [])
+  const mentions = get(data, 'mentions', [])
   const criadoEm = new Date(data.created_at)
   const mappedMedia = {
     uid: data.id,
-    tags: data?.hashtags?.map(tag => (tag.tag)),
-    mentions: data?.mentions?.map(user => user.tag) ?? [],
+    tags: hashtags.map(tag => (tag.tag)),
+    mentions: mentions.map(user => user.tag),
     link: getLink(data),
-    ad: isPub(data?.hashtags?.map(tag => (tag.tag)) ?? false),
+    ad: isPub(hashtags.map(tag => (tag.tag))),
     tipo: data.mediaType,
     origem: 'twitter',
     upvotes: get(data, 'metrics.like_count', null),
@@ -67,7 +69,7 @@ function mapTwitterMediaToSquidMedia (data) {
       replies: get(data, 'metrics.reply_count', null),
       user_profile_clicks: get(data, 'metrics.user_profile_clicks', null),
       tax_engagement: get(data, 'metrics.engagement', null),
-      polls: data.polls || [],
+      polls: get(data,'polls', []),
       retweets: get(data, 'metrics.retweet_count', null),
       conversation_id: get(data, 'conversation_id', null)
     },
