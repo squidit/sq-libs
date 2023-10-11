@@ -20,7 +20,6 @@ function mapStoryMediaToSquidMedia (storyMedia) {
     lastUpdate: new Date(),
     legenda: get(storyMedia, 'caption', ''),
     detection: get(storyMedia, 'detection', null),
-    duration: get(storyMedia, 'duration', 15),
     usuario: {
       id: `instagram|${get(storyMedia, 'user.ig_id')}`,
       username: get(storyMedia, 'user.username', ''),

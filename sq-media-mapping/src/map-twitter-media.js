@@ -31,7 +31,7 @@ function getLink (data) {
 }
 
 function isPub (tags) {
-  if (!tags || tags.legenth === 0) return false
+  if (!tags || tags.length === 0) return false
   const isAnyAdPost = tags.filter(tag => {
     return tag.indexOf('ad') > -1 || tag.indexOf('pub') > -1
   }).length > 0
