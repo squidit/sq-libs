@@ -39,108 +39,72 @@ function isPub (tags) {
 }
 
 function mapTwitterMediaToSquidMedia (data) {
-  const media = {
-    ...get(data, 'extended_entities.media[0]', {}),
-    url: get(data, 'extended_entities.media[0].expandaded_url', ''),
-    type: getMediaType(data)
+  const media = data.medias[0]
+  let typeTweet = 'tweet'
+  if (data.referenced_tweets && data.referenced_tweets.length > 0) {
+    typeTweet = data.referenced_tweets[0].type
   }
-  const url = get(data, 'extended_entities.media[0]', { media_url_https: '' }).media_url_https
-  let typeTweet = data.retweeted ? 'retweet' : 'tweet'
-  if (data.retweeted) {
-    if (data.is_quote_status) typeTweet = 'quoted_retweet'
-    else typeTweet = 'retweet'
-  } else {
-    if (data.is_quote_status) typeTweet = 'quoted_tweet'
-    else typeTweet = 'tweet'
-  }
+  const hashtags = get(data, 'hashtags', [])
+  const mentions = get(data, 'mentions', [])
   const criadoEm = new Date(data.created_at)
   const mappedMedia = {
     uid: data.id,
-    tags: data.entities.hashtags ? data.entities.hashtags.map(tag => (tag.tag)) : [],
-    mentions: data.entities.mentions ? data.entities.mentions.map(user => user.username) : [],
+    tags: hashtags.map(tag => (tag.tag)),
+    mentions: mentions.map(user => user.tag),
     link: getLink(data),
-    ad: isPub(data.entities.hashtags ? data.entities.hashtags.map(tag => (tag.tag)) : []),
-    tipo: media.type,
+    ad: isPub(hashtags.map(tag => (tag.tag))),
+    tipo: data.mediaType,
     origem: 'twitter',
-    upvotes: get(data, 'metrics.like_count', 0),
-    comentarios: get(data, 'metrics.reply_count', 0),
+    upvotes: get(data, 'metrics.like_count', null),
+    comentarios: get(data, 'metrics.reply_count', null),
     legenda: data.text,
     criadoEm,
     lastUpdate: new Date(),
     obtidoEm: new Date(),
     metadados: {
-      in_reply_to_status_id_str: get(data, 'metrics.in_reply_to_status_id_str', null) || data.in_reply_to_status_id_str,
-      source: get(data, 'metrics.source', null) || data.source,
+      in_reply_to_status_id_str: get(data, 'referenced_tweets[0].id', null),
       type_tweet: typeTweet,
-      impressions: get(data, 'metrics.impression_count', 0),
-      likes: get(data, 'metrics.like_count', 0),
-      replies: get(data, 'metrics.reply_count', 0),
-      video_views: get(data, 'metrics.video_views', 0) || get(data, 'metrics.mediaMetrics[0].organic_metrics.view_count', 0) || get(data, 'metrics.mediaMetrics[0].public_metrics.view_count', 0),
-      user_profile_clicks: get(data, 'metrics.user_profile_clicks', 0) || get(data, 'user_profile_clicks', 0),
-      url_clicks: get(data, 'metrics.url_clicks', get(data, 'metrics.urlClicks', 0)),
-      tax_engagement: get(data, 'metrics.engagement', 0),
-      polls: data.polls || [],
-      retweets: get(data, 'retweet_count', 0),
-      conversation_id: get(data, 'conversation_id', null),
-      user: {
-        followers_count: get(data, 'user.followers_count'),
-        friends_count: get(data, 'user.friends_count'),
-        created_at: get(data, 'user.created_at'),
-        url: get(data, 'user.url')
-      }
+      impressions: get(data, 'metrics.impression_count', null),
+      likes: get(data, 'metrics.like_count', null),
+      replies: get(data, 'metrics.reply_count', null),
+      user_profile_clicks: get(data, 'metrics.user_profile_clicks', null),
+      tax_engagement: get(data, 'metrics.engagement', null),
+      polls: get(data,'polls', []),
+      retweets: get(data, 'metrics.retweet_count', null),
+      conversation_id: get(data, 'conversation_id', null)
     },
     usuario: {
-      id: `twitter|${data.metadata.idUser}`,
-      username: get(data, 'metadata.username'),
-      foto: get(data, 'user.profile_image_url_https'),
-      nome: get(data, 'user.name')
+      id: `twitter|${data.user.id}`,
+      username: data.user.username,
     }
   }
   if (['imagem', 'video'].includes(mappedMedia.tipo)) {
     mappedMedia.imagens = {
       resolucaoPadrao: {
-        url: `${url}:large`,
-        width: media.sizes.large.w,
-        height: media.sizes.large.h
+        url: `${media.preview_image_url}:large`,
+        width: 1920,
+        height: 1080
       },
       resolucaoMedia: {
-        url: `${url}:small`,
-        width: media.sizes.small.w,
-        height: media.sizes.small.h
+        url: `${media.preview_image_url}:small`,
+        width: 680,
+        height: 380
       },
       thumbnail: {
-        url: `${url}:thumb`,
-        width: media.sizes.thumb.w,
-        height: media.sizes.thumb.h
+        url: `${media.preview_image_url}:thumb`,
+        width: 150,
+        height: 150
       }
     }
   }
 
-  if (data.place) {
-    const longitude = data.coordinates ? data.coordinates.coordinates[0] : getCenter(data.place.bounding_box.coordinates[0])[0]
-    const latitude = data.coordinates ? data.coordinates.coordinates[1] : getCenter(data.place.bounding_box.coordinates[0])[1]
-
-    mappedMedia.localizacao = {
-      id: data.place.id,
-      nome: data.place.name,
-      longitude,
-      latitude
-    }
-
-    mappedMedia.point = {
-      type: 'Point',
-      coordinates: [longitude, latitude]
-    }
-  }
-
   if (mappedMedia.tipo === 'video') {
-    const video = get(data, 'extended_entities.media[0]')
-    const sizesOrdered = video.video_info.variants.sort(v => v.bitrate).filter(v => (v.bitrate || v.bitrate === 0))
+    const sizesOrdered = media.variants.sort(v => v.bit_rate).filter(v => (v.bit_rate || v.bit_rate === 0))
     mappedMedia.videos = {
       resolucaoPadrao: {
         url: sizesOrdered[0].url,
-        width: 640,
-        height: 640
+        width: 1280,
+        height: 720
       },
       resolucaoMedia: {
         url: sizesOrdered.length > 1 ? sizesOrdered[1].url : sizesOrdered[0].url,
