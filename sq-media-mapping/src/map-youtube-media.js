@@ -32,28 +32,25 @@ function parseIso8601Duration (iso8601Duration) {
   // tslint:disable-next-line
   const iso8601DurationRegex = /(-)?P(?:([.,\d]+)Y)?(?:([.,\d]+)M)?(?:([.,\d]+)W)?(?:([.,\d]+)D)?T(?:([.,\d]+)H)?(?:([.,\d]+)M)?(?:([.,\d]+)S)?/
   const matches = iso8601Duration.match(iso8601DurationRegex) || []
-  return {
-    sign: matches[1] === undefined ? '+' : '-',
-    years: parseInt(get(matches, '[2]', 0)),
-    months: parseInt(get(matches, '[3]', 0)),
-    weeks: parseInt(get(matches, '[4]', 0)),
-    days: parseInt(get(matches, '[5]', 0)),
-    hours: parseInt(get(matches, '[6]', 0)),
-    minutes: parseInt(get(matches, '[7]', 0)),
-    seconds: parseInt(get(matches, '[8]', 0))
-  }
+  const minutes = parseInt(get(matches, '[7]', '0'))
+  const seconds = parseInt(get(matches, '[8]', '0'))
+  let typeOfMidia
+  if (minutes >= 2 || (minutes >= 1 && seconds >= 10))
+    typeOfMidia = 'video'
+  else
+    typeOfMidia = 'shorts'
+
+  const videoDuration = (minutes * 60) + (seconds)
+
+  return { typeOfMidia, videoDuration }
 }
 
 function mapYoutubeMediaToSquidMedia (youtubeMedia) {
   const mentionsTitle = getMentions(get(youtubeMedia, 'snippet.title', ''))
   const mentionsDescription = getMentions(get(youtubeMedia, 'snippet.description', ''))
   const criadoEm = new Date(get(youtubeMedia, 'snippet.publishedAt'))
-  const durationMetrics = parseIso8601Duration(youtubeMedia.contentDetails.duration)
-  if(durationMetrics.minutes >= 2 || (durationMetrics.minutes >= 1 && durationMetrics.seconds >= 10)) {
-    typeOfMidia = 'video'
-  } else {
-      typeOfMidia = 'shorts'
-  }
+  const { typeOfMidia, videoDuration } = parseIso8601Duration(youtubeMedia.contentDetails.duration)
+ 
   const videoInfo = youtubeMedia.player.embedHtml.split('"')
   const widthVideo = Number(videoInfo[1])
   const heightVideo = Number(videoInfo[3])
@@ -113,7 +110,7 @@ function mapYoutubeMediaToSquidMedia (youtubeMedia) {
       },
       description: get(youtubeMedia, 'snippet.description'),
       contentDetails: get(youtubeMedia, 'contentDetails'),
-      duration: parseIso8601Duration(get(youtubeMedia, 'contentDetails.duration', '')),
+      duration: videoDuration,
       player: get(youtubeMedia, 'player'),
       statusPrivacidade: get(youtubeMedia, 'status.privacyStatus'),
       idCategoria: parseInt(get(youtubeMedia, 'snippet.categoryId'))
