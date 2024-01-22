@@ -44,6 +44,19 @@ function mapTwitterMediaToSquidMedia (data) {
   if (data.referenced_tweets && data.referenced_tweets.length > 0) {
     typeTweet = data.referenced_tweets[0].type
   }
+  const impressions = get(data, 'metrics.impression_count', null)
+  const likes = get(data, 'metrics.like_count', null)
+  const comments = get(data, 'metrics.reply_count', null)
+  let comments_by_like
+  let repliesRate
+  if (likes > 0) {
+     comments_by_like = comments / likes
+  }
+
+  if (impressions > 0) {
+     repliesRate = comments / impressions
+  }
+
   const hashtags = get(data, 'hashtags', [])
   const mentions = get(data, 'mentions', [])
   const criadoEm = new Date(data.created_at)
@@ -55,8 +68,8 @@ function mapTwitterMediaToSquidMedia (data) {
     ad: isPub(hashtags.map(tag => (tag.tag))),
     tipo: data.mediaType,
     origem: 'twitter',
-    upvotes: get(data, 'metrics.like_count', null),
-    comentarios: get(data, 'metrics.reply_count', null),
+    upvotes: likes,
+    comentarios: comments,
     legenda: data.text,
     criadoEm,
     lastUpdate: new Date(),
@@ -64,14 +77,16 @@ function mapTwitterMediaToSquidMedia (data) {
     metadados: {
       in_reply_to_status_id_str: get(data, 'referenced_tweets[0].id', null),
       type_tweet: typeTweet,
-      impressions: get(data, 'metrics.impression_count', null),
-      likes: get(data, 'metrics.like_count', null),
-      replies: get(data, 'metrics.reply_count', null),
+      impressions,
+      likes,
+      replies: comments,
       user_profile_clicks: get(data, 'metrics.user_profile_clicks', null),
       tax_engagement: get(data, 'metrics.engagement', null),
       polls: get(data,'polls', []),
       retweets: get(data, 'metrics.retweet_count', null),
-      conversation_id: get(data, 'conversation_id', null)
+      conversation_id: get(data, 'conversation_id', null),
+      comments_by_like: comments_by_like || null,
+      repliesRate: repliesRate || null
     },
     usuario: {
       id: `twitter|${data.user.id}`,
