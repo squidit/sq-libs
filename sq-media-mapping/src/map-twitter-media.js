@@ -49,13 +49,12 @@ function mapTwitterMediaToSquidMedia (data) {
   const comments = get(data, 'metrics.reply_count', null)
   let comments_by_like
   let repliesRate
-  if (likes > 0) {
-     comments_by_like = comments / likes
-  }
-
-  if (impressions > 0) {
-     repliesRate = comments / impressions
-  }
+  if (likes > 0 && comments != null) {
+    comments_by_like = comments / likes
+ }
+ if (impressions > 0 && comments != null) {
+    repliesRate = comments / impressions
+ }
 
   const hashtags = get(data, 'hashtags', [])
   const mentions = get(data, 'mentions', [])
