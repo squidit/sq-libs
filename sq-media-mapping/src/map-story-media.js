@@ -20,7 +20,6 @@ function mapStoryMediaToSquidMedia (storyMedia) {
     lastUpdate: new Date(),
     legenda: get(storyMedia, 'caption', ''),
     detection: get(storyMedia, 'detection', null),
-    duration: get(storyMedia, 'duration', 15),
     usuario: {
       id: `instagram|${get(storyMedia, 'user.ig_id')}`,
       username: get(storyMedia, 'user.username', ''),
@@ -61,6 +60,7 @@ function mapStoryMediaToSquidMedia (storyMedia) {
       }
     }
   } else if (media.tipo === 'imagem_stories') {
+    media.duration = 15
     media.imagens = {
       resolucaoPadrao: {
         url: get(storyMedia, 'media_url', ''),
