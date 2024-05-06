@@ -17,6 +17,7 @@ function mapStoryMediaToSquidMedia (storyMedia) {
     upvotes: get(storyMedia, 'likes_count', 0),
     comentarios: get(storyMedia, 'comments_count', 0),
     criadoEm,
+    errorType: get(storyMedia, 'errorType', ''),
     lastUpdate: new Date(),
     legenda: get(storyMedia, 'caption', ''),
     detection: get(storyMedia, 'detection', null),
